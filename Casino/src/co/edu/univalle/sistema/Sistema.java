@@ -12,16 +12,36 @@ import java.util.ArrayList;
  */
 public class Sistema {
 
-    private final String posiblesModoDeJuego[] = {"JugadorVSJuador", "JugadorVSMaquina"};
+    private final String posiblesModoDeJuego[] = {"Jugador VS Jugador", "Jugador VS Maquina"};
     private String modoDeJuego;
     private ArrayList<Jugador> jugadores = new ArrayList<>();
     private int numeroLanzamientosRonda;
     private int numeroRondas;
+    private int tiempoDeJuego;
 
     public Sistema() {
         this.modoDeJuego = "";
         this.numeroLanzamientosRonda = 0;
         this.numeroRondas = 0;
+    }
+
+    public void agregarJugador(String nombre) {
+        Jugador jugador = new Jugador(nombre);
+        jugadores.add(jugador);
+    }
+
+    public void agregarMaquina() {
+        Maquina maquina = new Maquina();
+        maquina.generarNombreAleatorio();
+        jugadores.add(maquina);
+    }
+
+    public String[] obtenerPosibleModoDeJuego() {
+        return posiblesModoDeJuego;
+    }
+
+    public String obtenerPosibleModoDeJuego(int indice) {
+        return posiblesModoDeJuego[indice];
     }
 
     public String getModoDeJuego() {
@@ -30,6 +50,14 @@ public class Sistema {
 
     public void setModoDeJuego(String modoDeJuego) {
         this.modoDeJuego = modoDeJuego;
+    }
+
+    public int getTiempoDeJuego() {
+        return tiempoDeJuego;
+    }
+
+    public void setTiempoDeJuego(int tiempoDeJuego) {
+        this.tiempoDeJuego = tiempoDeJuego;
     }
 
     public int getNumeroLanzamientosRonda() {
@@ -47,18 +75,21 @@ public class Sistema {
     public void setNumeroRondas(int numeroRondas) {
         this.numeroRondas = numeroRondas;
     }
-    
-    public void agregarJugador(Jugador jugador){
+
+    public void agregarJugador(Jugador jugador) {
         jugadores.add(jugador);
     }
-    
-    public void eliminarJugadorPorIndice(int indice){
+
+    public Jugador obtenerJugador(int indice) {
+        return jugadores.get(indice);
+    }
+
+    public void eliminarJugadorPorIndice(int indice) {
         jugadores.remove(indice);
     }
-    
-    public void eliminarTodosLosJugadores(){
+
+    public void eliminarTodosLosJugadores() {
         jugadores.clear();
     }
-    
 
 }
