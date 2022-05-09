@@ -305,7 +305,7 @@ public class Inicio extends JFrame {
                     if ("Jugador VS Jugador".equals(juegoCasino.getModoDeJuego())) {
                         String nombre1 = txtCampo.getText();
                         String nombre2 = txtCampo2.getText();
-                        if (nombre1 == null || "".equals(nombre1) || nombre2 == null || "".equals(nombre2)) {
+                        if (nombre1 == null || "".equals(nombre1) || nombre2 == null || "".equals(nombre2) || nombre1==nombre2) {
                             JOptionPane.showMessageDialog(Inicio.this, "Ingresa nombres validos", "Casino Univalle", JOptionPane.WARNING_MESSAGE);
                         } else {
                             juegoCasino.agregarJugador(nombre1);
@@ -719,11 +719,18 @@ public class Inicio extends JFrame {
 
     public void resumen() {
 
+        contenedorPpal = getContentPane();
+        contenedorPpal.setLayout(new GridBagLayout());
+
         lblModoJuego = new javax.swing.JLabel();
         lblModoJuego.setText("Modo de Juego: ");
+        lblModoJuego.setFont(new java.awt.Font("Arial Narrow", 0, 19)); // NOI18N
+        lblModoJuego.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         lblNombre1 = new javax.swing.JLabel();
         lblNombre1.setText("Nombre Jugador 1: ");
+        lblNombre1.setFont(new java.awt.Font("Arial Narrow", 0, 19)); // NOI18N
+        lblNombre1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         lblNombre2 = new javax.swing.JLabel();
         if (juegoCasino.obtenerJugador(1) instanceof Maquina) {
@@ -731,73 +738,100 @@ public class Inicio extends JFrame {
         } else if (juegoCasino.obtenerJugador(1) instanceof Jugador) {
             lblNombre2.setText("Nombre del Jugador 2: ");
         } else {
-            lblNombre2.setText("Desconocido");
-
+            lblNombre2.setText("Desconocido: ");
         }
+        lblNombre2.setFont(new java.awt.Font("Arial Narrow", 0, 19)); // NOI18N
+        lblNombre2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         lblNumeroLanzamientos = new javax.swing.JLabel();
         lblNumeroLanzamientos.setText("Numero de lanzamientos por ronda: ");
+        lblNumeroLanzamientos.setFont(new java.awt.Font("Arial Narrow", 0, 19)); // NOI18N
+        lblNumeroLanzamientos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         lblRondas = new javax.swing.JLabel();
         lblRondas.setText("Numero rondas: ");
+        lblRondas.setFont(new java.awt.Font("Arial Narrow", 0, 19)); // NOI18N
+        lblRondas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         txtModoJuego = new javax.swing.JTextField();
         txtModoJuego.setEnabled(false);
         txtModoJuego.setText(juegoCasino.getModoDeJuego());
+        txtModoJuego.setFont(new java.awt.Font("Arial Narrow", 0, 19)); // NOI18N
+        txtModoJuego.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         txtNombre1 = new javax.swing.JTextField();
         txtNombre1.setEnabled(false);
         txtNombre1.setText(juegoCasino.obtenerJugador(0).getNombre());
+        txtNombre1.setFont(new java.awt.Font("Arial Narrow", 0, 19)); // NOI18N
+        txtNombre1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         txtNombre2 = new javax.swing.JTextField();
         txtNombre2.setEnabled(false);
         txtNombre2.setText(juegoCasino.obtenerJugador(1).getNombre());
+        txtNombre2.setFont(new java.awt.Font("Arial Narrow", 0, 19)); // NOI18N
+        txtNombre2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         txtNumeroLanzamientos = new javax.swing.JTextField();
         txtNumeroLanzamientos.setEnabled(false);
         txtNumeroLanzamientos.setText(juegoCasino.getNumeroLanzamientosRonda() + "");
+        txtNumeroLanzamientos.setFont(new java.awt.Font("Arial Narrow", 0, 19)); // NOI18N
+        txtNumeroLanzamientos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         txtRondas = new javax.swing.JTextField();
         txtRondas.setEnabled(false);
         txtRondas.setText(juegoCasino.getNumeroRondas() + "");
+        txtRondas.setFont(new java.awt.Font("Arial Narrow", 0, 19)); // NOI18N
+        txtRondas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         btnSeguirResumen = new javax.swing.JButton();
+        btnSeguirResumen.setFont(new java.awt.Font("Perpetua Titling MT", 0, 18)); // NOI18N
+        btnSeguirResumen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnSeguirResumen.setText("Seguir");
         btnSeguirResumen.setActionCommand("LIMPIAR+CREAR");
         btnSeguirResumen.addActionListener(gestorEventos);
+
         btnReiniciarResumen = new javax.swing.JButton();
+        btnReiniciarResumen.setFont(new java.awt.Font("Perpetua Titling MT", 0, 18)); // NOI18N
+        btnReiniciarResumen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnReiniciarResumen.setText("Reiniciar");
         btnReiniciarResumen.setActionCommand("LIMPIAR_RESUMEN");
         btnReiniciarResumen.addActionListener(gestorEventos);
 
-        contenedorPpal = getContentPane();
-        contenedorPpal.setLayout(new GridBagLayout());
+        panelCentro = new JPanel();
+        panelCentro.setLayout(new GridLayout(5, 1)); // Vamos a agrupar paneles dentro de un "grid"
 
-        constraints.fill = GridBagConstraints.BOTH;
-        setConstraints(0, 1, 1, 1);
-        contenedorPpal.add(lblModoJuego, constraints);
-        setConstraints(1, 1, 1, 1);
-        contenedorPpal.add(txtModoJuego, constraints);
-        setConstraints(0, 2, 1, 1);
-        contenedorPpal.add(lblNombre1, constraints);
-        setConstraints(1, 2, 1, 1);
-        contenedorPpal.add(txtNombre1, constraints);
-        setConstraints(0, 3, 1, 1);
-        contenedorPpal.add(lblNombre2, constraints);
-        setConstraints(1, 3, 1, 1);
-        contenedorPpal.add(txtNombre2, constraints);
-        setConstraints(0, 4, 1, 1);
-        contenedorPpal.add(lblNumeroLanzamientos, constraints);
-        setConstraints(1, 4, 1, 1);
-        contenedorPpal.add(txtNumeroLanzamientos, constraints);
-        setConstraints(0, 5, 1, 1);
-        contenedorPpal.add(lblRondas, constraints);
-        setConstraints(1, 5, 1, 1);
-        contenedorPpal.add(txtRondas, constraints);
-        setConstraints(0, 6, 1, 1);
-        contenedorPpal.add(btnSeguirResumen, constraints);
-        setConstraints(1, 6, 1, 1);
-        contenedorPpal.add(btnReiniciarResumen, constraints);
+        lblTitulo = new JLabel();
+        lblTitulo.setText("CASINO UNIVALLE");
+        lblTitulo.setFont(new java.awt.Font("Perpetua Titling MT", 0, 24)); // NOI18N
+        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        panelTitulo = new JPanel();
+        panelTitulo.setLayout(new FlowLayout(FlowLayout.CENTER));
+        panelTitulo.add(lblTitulo);
+
+        panelnombres = new JPanel();
+        panelnombres.setLayout(new GridLayout(5, 2, 50, 0));
+        panelnombres.add(lblModoJuego);
+        panelnombres.add(txtModoJuego);
+        panelnombres.add(lblNombre1);
+        panelnombres.add(txtNombre1);
+        panelnombres.add(lblNombre2);
+        panelnombres.add(txtNombre2);
+        panelnombres.add(lblNumeroLanzamientos);
+        panelnombres.add(txtNumeroLanzamientos);
+        panelnombres.add(lblRondas);
+        panelnombres.add(txtRondas);
+
+        panelBotonesI = new JPanel();
+        panelBotonesI.setLayout(new FlowLayout(FlowLayout.CENTER));
+        panelBotonesI.add(btnSeguirResumen);
+        panelBotonesI.add(btnReiniciarResumen);
+
+        panelCentro.add(panelTitulo);
+        panelCentro.add(panelnombres);
+        panelCentro.add(panelBotonesI);
+
+        contenedorPpal.add(panelCentro);
 
     }
 
@@ -1005,11 +1039,11 @@ public class Inicio extends JFrame {
 
         lblMensaje = new JLabel();
         lblMensaje.setText("Nombre del Jugador #1 ");
-        lblMensaje.setFont(new java.awt.Font("Arial Narrow", 0, 14)); // NOI18N
+        lblMensaje.setFont(new java.awt.Font("Arial Narrow", 0, 19)); // NOI18N
         lblMensaje.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         txtCampo = new JTextField(10);
-        txtCampo.setFont(new java.awt.Font("Arial Narrow", 0, 14)); // NOI18N
+        txtCampo.setFont(new java.awt.Font("Arial Narrow", 0, 19)); // NOI18N
         txtCampo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         btnSeguir = new JButton();
@@ -1026,11 +1060,11 @@ public class Inicio extends JFrame {
         if ("Jugador VS Jugador".equals(juegoCasino.getModoDeJuego())) {
             lblMensaje2 = new JLabel();
             lblMensaje2.setText("Nombre del Jugador #2 ");
-            lblMensaje2.setFont(new java.awt.Font("Arial Narrow", 0, 14)); // NOI18N
+            lblMensaje2.setFont(new java.awt.Font("Arial Narrow", 0, 19)); // NOI18N
             lblMensaje2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
             txtCampo2 = new JTextField(10);
-            txtCampo2.setFont(new java.awt.Font("Arial Narrow", 0, 14)); // NOI18N
+            txtCampo2.setFont(new java.awt.Font("Arial Narrow", 0, 19)); // NOI18N
             txtCampo2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             panelnombres = new JPanel();
             panelnombres.setLayout(new GridLayout(2, 2, 50, 0));
@@ -1048,7 +1082,7 @@ public class Inicio extends JFrame {
         panelBotonesI = new JPanel();
         panelBotonesI.setLayout(new FlowLayout(FlowLayout.CENTER));
         panelBotonesI.add(btnSeguir);
-        
+
         panelCentro.add(panelTitulo);
         panelCentro.add(panelnombres);
         panelCentro.add(panelBotonesI);
@@ -1088,11 +1122,11 @@ public class Inicio extends JFrame {
 
         lblMensaje = new JLabel();
         lblMensaje.setText("Digite el numero de lanzamientos por ronda");
-        lblMensaje.setFont(new java.awt.Font("Arial Narrow", 0, 14)); // NOI18N
+        lblMensaje.setFont(new java.awt.Font("Arial Narrow", 0, 19)); // NOI18N
         lblMensaje.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         txtCampo = new JTextField(10);
-        txtCampo.setFont(new java.awt.Font("Arial Narrow", 0, 14)); // NOI18N
+        txtCampo.setFont(new java.awt.Font("Arial Narrow", 0, 19)); // NOI18N
         txtCampo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         btnSeguir = new JButton();
