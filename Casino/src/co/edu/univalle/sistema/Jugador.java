@@ -15,6 +15,7 @@ public class Jugador {
     protected boolean esPersona;
     protected int tiempoDeJuego;
     protected int sumaResultado;
+    protected int lanzamientosHechos;
     protected int lanzamientosGanados;
     protected int rondasGanadas;
     protected int puntajeLanzamientoActual;
@@ -26,6 +27,7 @@ public class Jugador {
         this.esPersona = true;
         this.tiempoDeJuego = 0;
         this.sumaResultado = 0;
+        this.lanzamientosHechos = 0;
         this.lanzamientosGanados = 0;
         this.rondasGanadas = 0;
         this.puntajeLanzamientoActual = 0;
@@ -37,10 +39,19 @@ public class Jugador {
         this.debeLanzar = false;
         this.esPersona = true;
         this.tiempoDeJuego = 0;
+        this.lanzamientosHechos = 0;
         this.sumaResultado = 0;
         this.lanzamientosGanados = 0;
         this.rondasGanadas = 0;
         this.puntajeLanzamientoActual = 0;
+    }
+
+    public int getLanzamientosHechos() {
+        return lanzamientosHechos;
+    }
+
+    public void setLanzamientosHechos(int lanzamientosHechos) {
+        this.lanzamientosHechos = lanzamientosHechos;
     }
 
     public String getNombre() {
@@ -106,7 +117,7 @@ public class Jugador {
     public void setPuntajeLanzamientoActual(int puntajeLanzamientoActual) {
         this.puntajeLanzamientoActual = puntajeLanzamientoActual;
     }
-    
+
     public void generarNombreAleatorio() {
     }
 

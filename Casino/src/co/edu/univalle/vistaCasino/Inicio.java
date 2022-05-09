@@ -107,7 +107,7 @@ public class Inicio extends JFrame {
         inicializarComponentes();
         setLocationRelativeTo(null);
         setTitle("Casino Univalle"); //Título del JFrame
-        setSize(600, 500); //Dimensiones del JFrame
+        setSize(900, 500); //Dimensiones del JFrame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Cerrar al salir
         setVisible(true); //Mostrar JFrame
         setIconImage(new ImageIcon(getClass().getResource("/imagenes/icono.png")).getImage());
@@ -179,29 +179,6 @@ public class Inicio extends JFrame {
                         }
                         if (estado) {
                             juegoCasino.setNumeroLanzamientosRonda(lanzamientos);
-                            limpiarVentana();
-                            inicializarRondasDeJuego();
-                            break;
-                        }
-                    }
-                    break;
-                case "BOTON_SEGUIR_RONDAS":
-                    String numeroDeRondas = txtCampo.getText();
-
-                    if (numeroDeRondas == null || "".equals(numeroDeRondas) || "0".equals(numeroDeRondas)) {
-                        JOptionPane.showMessageDialog(Inicio.this, "Ingresa un valor valido", "Casino Univalle", JOptionPane.WARNING_MESSAGE);
-                    } else {
-                        boolean estado = true;
-
-                        int rondas = 0;
-                        try {
-                            rondas = Integer.parseInt(numeroDeRondas);
-                        } catch (NumberFormatException ex) {
-                            JOptionPane.showMessageDialog(Inicio.this, "Ingresa un valor valido", "Casino Univalle", JOptionPane.WARNING_MESSAGE);
-                            estado = false;
-                        }
-                        if (estado) {
-                            juegoCasino.setNumeroRondas(rondas);
                             limpiarVentana();
                             inicializarNombres();
                             break;
@@ -603,35 +580,7 @@ public class Inicio extends JFrame {
         contenedorPpal.add(btnSeguir, constraints);
     }
 
-    private void inicializarRondasDeJuego() {
-
-        contenedorPpal = getContentPane();
-        contenedorPpal.setLayout(new GridBagLayout());
-
-        lblTitulo = new JLabel();
-        lblTitulo.setText("CASINO UNIVALLE");
-        setConstraints(0, 0, 1, 1);
-        contenedorPpal.add(lblTitulo, constraints);
-
-        lblMensaje = new JLabel();
-        lblMensaje.setText("Digite el numero rondas, una vez...");
-        setConstraints(2, 2, 2, 2);
-        contenedorPpal.add(lblMensaje, constraints);
-
-        txtCampo = new JTextField(10);
-        setConstraints(5, 4, 9, 5);
-        contenedorPpal.add(txtCampo, constraints);
-
-        btnSeguir = new JButton();
-        btnSeguir.setText("Seguir");
-        setConstraints(7, 9, 2, 2);
-        btnSeguir.setEnabled(true);
-        contenedorPpal.add(btnSeguir, constraints);
-
-        btnSeguir.setActionCommand("BOTON_SEGUIR_RONDAS");
-        btnSeguir.addActionListener(gestorEventos);
-
-    }
+   
 
     private void inicializarLanzamientoPorRonda() {
 

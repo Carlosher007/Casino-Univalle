@@ -18,11 +18,31 @@ public class Sistema {
     private int numeroLanzamientosRonda;
     private int numeroRondas;
     private int tiempoDeJuego;
+    private int lanzamientosEmpatados;
+    private int numeroLanzamientoActual;
 
     public Sistema() {
         this.modoDeJuego = "";
         this.numeroLanzamientosRonda = 0;
-        this.numeroRondas = 0;
+        this.numeroRondas = 1;
+        this.lanzamientosEmpatados = 0;
+        this.numeroLanzamientosRonda = 0;
+    }
+
+    public int getLanzamientosEmpatados() {
+        return lanzamientosEmpatados;
+    }
+
+    public void setLanzamientosEmpatados(int lanzamientosEmpatados) {
+        this.lanzamientosEmpatados = lanzamientosEmpatados;
+    }
+
+    public int getNumeroLanzamientoActual() {
+        return numeroLanzamientoActual;
+    }
+
+    public void setNumeroLanzamientoActual(int numeroLanzamientoActual) {
+        this.numeroLanzamientoActual = numeroLanzamientoActual;
     }
 
     public void agregarJugador(String nombre) {
