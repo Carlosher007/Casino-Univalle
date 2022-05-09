@@ -5,9 +5,9 @@ import co.edu.univalle.sistema.Maquina;
 import co.edu.univalle.sistema.Sistema;
 
 import java.awt.Container;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.event.*;
 import java.util.Random;
 import javax.swing.*;
@@ -23,6 +23,7 @@ public class VentanaCasino extends JFrame {
     private Sistema juegoCasino = new Sistema();
     Random aleatorio = new Random();
     GridBagConstraints constraints = new GridBagConstraints();
+    EventosInternos gestorEventos = new EventosInternos();
 
     // Elementos para el lanzamiento de dados
     private JLabel lblTitulo;
@@ -31,6 +32,7 @@ public class VentanaCasino extends JFrame {
     private JButton btnLanzar;
     private JTextField txtResultado;
     private Container contenedorPpal;
+    private JPanel flowPanel;
 
     private JLabel lblModoJuego;
     private JTextField txtModoJuego;
@@ -44,6 +46,26 @@ public class VentanaCasino extends JFrame {
     private JTextField txtRondas;
     private JButton btnSeguirResumen;
     private JButton btnReiniciarResumen;
+
+    private JLabel lblLanzamientos;
+    private JTextField txtLanzamientos;
+    private JLabel lblLanzamientosJ1;
+    private JTextField txtLanzamientosJ1;
+    private JLabel lblLanzamientosJ2;
+    private JTextField txtLanzamientosJ2;
+    private JLabel lblLanzamientosEmpate;
+    private JTextField txtLanzamientosEmpate;
+    private JLabel lblGanadorParcial;
+    private JTextField txtGanadorParcial;
+    private JLabel lblSumatoriaJ1;
+    private JTextField txtSumatoriaJ1;
+    private JLabel lblSumatoriaJ2;
+    private JTextField txtSumatoriaJ2;
+    private JLabel lblTiempoRonda;
+    private JTextField txtTiempoRonda;
+    private JLabel lblTurnoActual;
+    private JTextField txtTurnoActual;
+    private JButton btnSeguir;
 
 
     /**
@@ -232,28 +254,39 @@ public class VentanaCasino extends JFrame {
 
         btnSeguirResumen = new javax.swing.JButton();
         btnSeguirResumen.setText("Seguir");
+        btnSeguirResumen.setActionCommand("LIMPIAR+CREAR");
+        btnSeguirResumen.addActionListener(gestorEventos);
         btnReiniciarResumen = new javax.swing.JButton();
-        btnReiniciarResumen.setText("Seguir");
-
+        btnReiniciarResumen.setText("Reiniciar");
 
         contenedorPpal = getContentPane();
         contenedorPpal.setLayout(new GridBagLayout());
 
-        
-        
-        contenedorPpal.add(lblModoJuego);
-        contenedorPpal.add(txtModoJuego);
-        contenedorPpal.add(lblNombre1);
-        contenedorPpal.add(txtNombre1);
-        contenedorPpal.add(lblNombre2);
-        contenedorPpal.add(txtNombre2);
-        contenedorPpal.add(lblNumeroLanzamientos);
-        contenedorPpal.add(txtNumeroLanzamientos);
-        contenedorPpal.add(lblRondas);
-        contenedorPpal.add(txtRondas);
-        contenedorPpal.add(btnSeguirResumen);
-        contenedorPpal.add(btnReiniciarResumen);
-
+        constraints.fill = GridBagConstraints.BOTH;
+        setConstraints(0,1,1,1);
+        contenedorPpal.add(lblModoJuego, constraints);
+        setConstraints(1,1,1,1);
+        contenedorPpal.add(txtModoJuego, constraints);
+        setConstraints(0,2,1,1);
+        contenedorPpal.add(lblNombre1, constraints);
+        setConstraints(1,2,1,1);
+        contenedorPpal.add(txtNombre1, constraints);
+        setConstraints(0,3,1,1);
+        contenedorPpal.add(lblNombre2, constraints);
+        setConstraints(1,3,1,1);
+        contenedorPpal.add(txtNombre2, constraints);
+        setConstraints(0,4,1,1);
+        contenedorPpal.add(lblNumeroLanzamientos, constraints);
+        setConstraints(1,4,1,1);
+        contenedorPpal.add(txtNumeroLanzamientos, constraints);
+        setConstraints(0,5,1,1);
+        contenedorPpal.add(lblRondas, constraints);
+        setConstraints(1,5,1,1);
+        contenedorPpal.add(txtRondas, constraints);
+        setConstraints(0,6,1,1);
+        contenedorPpal.add(btnSeguirResumen, constraints);
+        setConstraints(1,6,1,1);
+        contenedorPpal.add(btnReiniciarResumen, constraints);
 
     }
 

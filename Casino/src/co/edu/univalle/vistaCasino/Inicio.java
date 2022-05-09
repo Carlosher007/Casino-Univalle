@@ -3,19 +3,18 @@ package co.edu.univalle.vistaCasino;
 import co.edu.univalle.sistema.Jugador;
 import co.edu.univalle.sistema.Maquina;
 import co.edu.univalle.sistema.Sistema;
-import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.event.*;
 import java.util.Random;
 import javax.swing.*;
+import javax.swing.SwingUtilities;
 
 /**
  *
- * @author Carlos Andres Hernandez Agudelo , Brian Sanchez
+ * @author Carlos Andres Hernandez Agudelo , Brayan Sanchez
  */
 public class Inicio extends JFrame {
 
@@ -29,6 +28,7 @@ public class Inicio extends JFrame {
      * INICIO
      */
     private JLabel lblTitulo;
+    private JLabel lblLogo;
     private JButton btnEmpezar;
     private Container contenedorPpal;
 
@@ -89,6 +89,15 @@ public class Inicio extends JFrame {
     private JLabel lblTurnoActual;
     private JTextField txtTurnoActual;
 
+    private JButton btnJugarDeNuevo;
+    private JButton btnSalir;
+
+    private int empates;
+    private int sumatoriaJ1;
+    private int sumatoriaJ2;
+    private int resultado;
+    private boolean tirohecho = false;
+
     private void setConstraints(int x, int y, int hx, int hy) {
         constraints.gridx = x;
         constraints.gridy = y;
@@ -121,6 +130,7 @@ public class Inicio extends JFrame {
         EventosInternos gestorEventos = new EventosInternos();
 
         lblTitulo = new JLabel();
+        lblLogo = new JLabel();
         btnEmpezar = new JButton();
 
         contenedorPpal = getContentPane();
@@ -129,6 +139,11 @@ public class Inicio extends JFrame {
         lblTitulo.setText("CASINO UNIVALLE");
         setConstraints(0, 0, 2, 1);
         contenedorPpal.add(lblTitulo, constraints);
+
+        Icon logo = new javax.swing.ImageIcon(getClass().getResource("/imagenes/icono.png"));
+        lblLogo.setIcon(logo);
+        setConstraints(0, 1, 2, 2);
+        contenedorPpal.add(lblLogo, constraints);
 
         btnEmpezar.setText("Empezar");
         btnEmpezar.setActionCommand("EMPEZAR");
@@ -266,8 +281,12 @@ public class Inicio extends JFrame {
                     }
 
                     //Mostramos por texto el resultado del lanzamiento
-                    int resultado = dado1 + dado2;
+                    resultado = dado1 + dado2;
                     txtResultado.setText(resultado + "");
+                    SwingUtilities.updateComponentTreeUI(contenedorPpal);
+                    btnLanzar.setEnabled(false);
+                    btnSeguir.setEnabled(true);
+                    tirohecho = true;
 
                     break;
 
@@ -278,7 +297,23 @@ public class Inicio extends JFrame {
                 case "LIMPIAR+CREAR":
                     limpiarVentana();
                     crearInterfazJuego();
+                    primeraRonda();
                     break;
+
+                case "PASAR-TURNO":
+                    txtResultado.setText("");
+                    SwingUtilities.updateComponentTreeUI(contenedorPpal);
+                    boolean J1 = juegoCasino.obtenerJugador(0).isDebeLanzar();
+                    boolean J2 = juegoCasino.obtenerJugador(1).isDebeLanzar();
+                    if(juegoCasino.getModoDeJuego() == "Jugador VS Maquina" && J1 == true && tirohecho == true){
+                        pasoDeTurno(J1, J2);
+                    } else if(juegoCasino.getModoDeJuego() == "Jugador VS Jugador"){
+                        pasoDeTurno(J1, J2);
+                    }
+                    btnLanzar.setEnabled(true);
+                    btnSeguir.setEnabled(false);
+                    break;
+
                 default:
                     JOptionPane.showMessageDialog(Inicio.this, "Hubo problemas en los datos, disculpe", "Casino Univalle", JOptionPane.WARNING_MESSAGE);
 
@@ -286,6 +321,228 @@ public class Inicio extends JFrame {
                     break;
             }
         }
+    }
+
+    public void ganadorParcial(int J1, int J2){
+        if(J1 > J2){
+            txtGanadorParcial.setText(juegoCasino.obtenerJugador(0).getNombre());
+        } else if(J1 < J2){
+            txtGanadorParcial.setText(juegoCasino.obtenerJugador(1).getNombre());
+        } else {
+            txtGanadorParcial.setText("Ninguno");
+        }
+        SwingUtilities.updateComponentTreeUI(contenedorPpal);
+    }
+
+    public void finDelJuego(){
+        btnLanzar.setEnabled(false);
+        btnSeguir.setEnabled(false);
+        int delay = 1500;
+        Timer timer = new Timer( delay, new ActionListener(){
+        @Override
+        public void actionPerformed( ActionEvent e ){
+        limpiarVentana();
+        SwingUtilities.updateComponentTreeUI(contenedorPpal);
+        JOptionPane.showMessageDialog(Inicio.this, "¡Felicidades " + txtGanadorParcial.getText() + ", ganaste!", "Casino Univalle", JOptionPane.WARNING_MESSAGE);
+        lblGanadorParcial.setText("Jugador Vencedor: ");
+        setConstraints(0,1,2,1);
+        contenedorPpal.add(lblGanadorParcial, constraints);
+        setConstraints(2,1,2,1);
+        contenedorPpal.add(txtGanadorParcial, constraints);
+
+        btnJugarDeNuevo = new JButton();
+        btnSalir = new JButton();
+
+        lblLanzamientosJ1.setFont(new java.awt.Font("Century Gothic", 0, 18));
+        lblLanzamientosJ1.setText("# de Lanzamientos Jugador 1: ");
+        setConstraints(0, 2, 1, 1);
+        contenedorPpal.add(lblLanzamientosJ1, constraints);
+
+        txtLanzamientosJ1.setEditable(false);
+        txtLanzamientosJ1.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        setConstraints(1, 2, 1, 1);
+        txtLanzamientosJ1.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        contenedorPpal.add(txtLanzamientosJ1, constraints);
+
+        lblLanzamientosJ2.setFont(new java.awt.Font("Century Gothic", 0, 18));
+        lblLanzamientosJ2.setText("# de Lanzamientos Jugador 2: ");
+        setConstraints(0, 3, 1, 1);
+        contenedorPpal.add(lblLanzamientosJ2, constraints);
+
+        txtLanzamientosJ2.setEditable(false);
+        txtLanzamientosJ2.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        setConstraints(1, 3, 1, 1);
+        txtLanzamientosJ2.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        contenedorPpal.add(txtLanzamientosJ2, constraints);
+
+        lblLanzamientosEmpate.setFont(new java.awt.Font("Century Gothic", 0, 18));
+        lblLanzamientosEmpate.setText("# de Lanzamientos con Empate: ");
+        setConstraints(0, 4, 1, 1);
+        contenedorPpal.add(lblLanzamientosEmpate, constraints);
+
+        txtLanzamientosEmpate.setEditable(false);
+        txtLanzamientosEmpate.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        setConstraints(1, 4, 1, 1);
+        txtLanzamientosEmpate.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        contenedorPpal.add(txtLanzamientosEmpate, constraints);
+
+        lblSumatoriaJ1.setFont(new java.awt.Font("Century Gothic", 0, 18));
+        lblSumatoriaJ1.setText("Sumatoria Jugador 1: ");
+        setConstraints(2, 2, 1, 1);
+        contenedorPpal.add(lblSumatoriaJ1, constraints);
+
+        txtSumatoriaJ1.setEditable(false);
+        txtSumatoriaJ1.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        setConstraints(3, 2, 1, 1);
+        txtSumatoriaJ1.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        contenedorPpal.add(txtSumatoriaJ1, constraints);
+
+        lblSumatoriaJ2.setFont(new java.awt.Font("Century Gothic", 0, 18));
+        lblSumatoriaJ2.setText("Sumatoria Jugador 2: ");
+        setConstraints(2, 3, 1, 1);
+        contenedorPpal.add(lblSumatoriaJ2, constraints);
+
+        txtSumatoriaJ2.setEditable(false);
+        txtSumatoriaJ2.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        setConstraints(3, 3, 1, 1);
+        txtSumatoriaJ2.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        contenedorPpal.add(txtSumatoriaJ2, constraints);
+
+        lblTiempoRonda.setFont(new java.awt.Font("Century Gothic", 0, 18));
+        lblTiempoRonda.setText("Tiempo Ronda: ");
+        setConstraints(2, 4, 1, 1);
+        contenedorPpal.add(lblTiempoRonda, constraints);
+
+        txtTiempoRonda.setEditable(false);
+        txtTiempoRonda.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        setConstraints(3, 4, 1, 1);
+        txtTiempoRonda.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        contenedorPpal.add(txtTiempoRonda, constraints);
+
+        flowPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 10));
+        flowPanel.setBorder(BorderFactory.createEmptyBorder());
+        setConstraints(0, 5, 4, 1);
+        contenedorPpal.add(flowPanel, constraints);
+
+        btnJugarDeNuevo.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        btnJugarDeNuevo.setText("Jugar de Nuevo");
+        btnJugarDeNuevo.setActionCommand("LIMPIAR+CREAR");
+        btnJugarDeNuevo.addActionListener(gestorEventos);
+        setConstraints(0, 6, 1, 1);
+        contenedorPpal.add(btnJugarDeNuevo, constraints);
+
+        btnReiniciarResumen.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        btnReiniciarResumen.setText("Reiniciar Casino");
+        btnReiniciarResumen.setActionCommand("REINICIAR"); //FALTA CREAR ESTE COMANDO
+        btnReiniciarResumen.addActionListener(gestorEventos);
+        setConstraints(1, 6, 1, 1);
+        contenedorPpal.add(btnReiniciarResumen, constraints);
+
+        btnSalir.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        btnSalir.setText("Finalizar");
+        btnSalir.setActionCommand("SALIR"); //FALTA CREAR ESTE COMANDO
+        btnSalir.addActionListener(gestorEventos);
+        setConstraints(2, 6, 1, 1);
+        contenedorPpal.add(btnSalir, constraints);
+
+        SwingUtilities.updateComponentTreeUI(contenedorPpal);
+        }
+        } );
+        timer.setRepeats( false );
+        timer.start();
+
+    }
+
+    public void tiroDeMaquina(){
+        int delay = 1500;
+        Timer timer = new Timer( delay, new ActionListener(){
+        @Override
+        public void actionPerformed( ActionEvent e ){
+
+            btnLanzar.setEnabled(true);
+            btnLanzar.doClick();
+            pasoDeTurno(false,true);
+        }
+        } );
+        timer.setRepeats( false );
+        timer.start();
+
+        int delay2 = 3000;
+        Timer timer2 = new Timer( delay2, new ActionListener(){
+        @Override
+        public void actionPerformed( ActionEvent e ){
+            tirohecho = false;
+            btnSeguir.doClick();
+            btnLanzar.setEnabled(true);
+            btnSeguir.setEnabled(false);
+        }
+        } );
+        timer2.setRepeats( false );
+        timer2.start();
+    }
+
+
+    public void pasoDeTurno(boolean J1, boolean J2){
+        int lanzamientosRestantes = juegoCasino.getNumeroLanzamientosRonda();
+        int lanzamientosRealizadosJ1 = juegoCasino.obtenerJugador(0).getLanzamientosHechos();
+        int lanzamientosRealizadosJ2 = juegoCasino.obtenerJugador(1).getLanzamientosHechos();
+        int puntajeJ1 = juegoCasino.obtenerJugador(0).getPuntajeLanzamientoActual();
+        int puntajeJ2 = juegoCasino.obtenerJugador(1).getPuntajeLanzamientoActual();
+
+        if(J1 == true){
+            puntajeJ1 = resultado;
+            lanzamientosRealizadosJ1 += 1;
+            juegoCasino.obtenerJugador(0).setLanzamientosHechos(lanzamientosRealizadosJ1);
+            txtLanzamientosJ1.setText(lanzamientosRealizadosJ1 + "");
+            juegoCasino.obtenerJugador(0).setPuntajeLanzamientoActual(puntajeJ1);
+            sumatoriaJ1 += puntajeJ1;
+            txtSumatoriaJ1.setText(sumatoriaJ1 + "");
+            juegoCasino.obtenerJugador(0).setDebeLanzar(false);
+            juegoCasino.obtenerJugador(1).setDebeLanzar(true);
+            txtTurnoActual.setText(juegoCasino.obtenerJugador(1).getNombre());
+            SwingUtilities.updateComponentTreeUI(contenedorPpal);
+            ganadorParcial(sumatoriaJ1, sumatoriaJ2);
+            if(juegoCasino.getModoDeJuego() == "Jugador VS Maquina"){
+                tiroDeMaquina();
+            }
+        } else {
+            SwingUtilities.updateComponentTreeUI(contenedorPpal);
+            puntajeJ2 = resultado;
+            if(puntajeJ1 == puntajeJ2){
+                lanzamientosRealizadosJ1 -= 1;
+                juegoCasino.obtenerJugador(0).setLanzamientosHechos(lanzamientosRealizadosJ1);
+                txtLanzamientosJ1.setText(lanzamientosRealizadosJ1 + "");
+                sumatoriaJ1 -= puntajeJ1;
+                txtSumatoriaJ1.setText(sumatoriaJ1+ "");
+                juegoCasino.obtenerJugador(0).setDebeLanzar(true);
+                juegoCasino.obtenerJugador(1).setDebeLanzar(false);
+                txtTurnoActual.setText(juegoCasino.obtenerJugador(0).getNombre());
+                SwingUtilities.updateComponentTreeUI(contenedorPpal);
+                empates += 1;
+                txtLanzamientosEmpate.setText(empates + "");
+                JOptionPane.showMessageDialog(Inicio.this, "¡Empate! Se repetirán los lanzamientos", "Casino Univalle", JOptionPane.WARNING_MESSAGE);
+                ganadorParcial(sumatoriaJ1, sumatoriaJ2);
+            } else {
+                lanzamientosRestantes -= 1;
+                juegoCasino.setNumeroLanzamientosRonda(lanzamientosRestantes);
+                txtLanzamientos.setText(lanzamientosRestantes + "");
+                lanzamientosRealizadosJ2 += 1;
+                juegoCasino.obtenerJugador(1).setLanzamientosHechos(lanzamientosRealizadosJ2);
+                txtLanzamientosJ2.setText(lanzamientosRealizadosJ2 + "");
+                juegoCasino.obtenerJugador(1).setPuntajeLanzamientoActual(puntajeJ2);
+                sumatoriaJ2 += puntajeJ2;
+                txtSumatoriaJ2.setText(sumatoriaJ2 + "");
+                txtTurnoActual.setText(juegoCasino.obtenerJugador(0).getNombre());
+                SwingUtilities.updateComponentTreeUI(contenedorPpal);
+                ganadorParcial(sumatoriaJ1, sumatoriaJ2);
+                juegoCasino.obtenerJugador(1).setDebeLanzar(false);
+                juegoCasino.obtenerJugador(0).setDebeLanzar(true);
+                    if(lanzamientosRestantes == 0){
+                        finDelJuego();
+                    }
+            }
+        }    
+
     }
 
     public void resumen() {
@@ -403,7 +660,7 @@ public class Inicio extends JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         lblLanzamientos.setFont(new java.awt.Font("Century Gothic", 0, 18));
-        lblLanzamientos.setText("# de Lanzaminetos:");
+        lblLanzamientos.setText("# de Lanzamientos: ");
         setConstraints(0, 0, 1, 1);
         contenedorPpal.add(lblLanzamientos, constraints);
 
@@ -414,7 +671,7 @@ public class Inicio extends JFrame {
         contenedorPpal.add(txtLanzamientos, constraints);
 
         lblLanzamientosJ1.setFont(new java.awt.Font("Century Gothic", 0, 18));
-        lblLanzamientosJ1.setText("# de Lanzaminetos Jugador 1:");
+        lblLanzamientosJ1.setText("# de Lanzamientos Jugador 1: ");
         setConstraints(0, 1, 1, 1);
         contenedorPpal.add(lblLanzamientosJ1, constraints);
 
@@ -425,7 +682,7 @@ public class Inicio extends JFrame {
         contenedorPpal.add(txtLanzamientosJ1, constraints);
 
         lblLanzamientosJ2.setFont(new java.awt.Font("Century Gothic", 0, 18));
-        lblLanzamientosJ2.setText("# de Lanzaminetos Jugador 2:");
+        lblLanzamientosJ2.setText("# de Lanzamientos Jugador 2: ");
         setConstraints(0, 2, 1, 1);
         contenedorPpal.add(lblLanzamientosJ2, constraints);
 
@@ -436,7 +693,7 @@ public class Inicio extends JFrame {
         contenedorPpal.add(txtLanzamientosJ2, constraints);
 
         lblLanzamientosEmpate.setFont(new java.awt.Font("Century Gothic", 0, 18));
-        lblLanzamientosEmpate.setText("# de Lanzaminetos con Empate:");
+        lblLanzamientosEmpate.setText("# de Lanzamientos con Empate: ");
         setConstraints(0, 3, 1, 1);
         contenedorPpal.add(lblLanzamientosEmpate, constraints);
 
@@ -447,7 +704,7 @@ public class Inicio extends JFrame {
         contenedorPpal.add(txtLanzamientosEmpate, constraints);
 
         lblGanadorParcial.setFont(new java.awt.Font("Century Gothic", 0, 18));
-        lblGanadorParcial.setText("Jugador Parcialmente Ganador:");
+        lblGanadorParcial.setText("Jugador Parcialmente Ganador: ");
         setConstraints(2, 0, 1, 1);
         contenedorPpal.add(lblGanadorParcial, constraints);
 
@@ -458,7 +715,7 @@ public class Inicio extends JFrame {
         contenedorPpal.add(txtGanadorParcial, constraints);
 
         lblSumatoriaJ1.setFont(new java.awt.Font("Century Gothic", 0, 18));
-        lblSumatoriaJ1.setText("Sumatoria Jugador 1:");
+        lblSumatoriaJ1.setText("Sumatoria Jugador 1: ");
         setConstraints(2, 1, 1, 1);
         contenedorPpal.add(lblSumatoriaJ1, constraints);
 
@@ -469,7 +726,7 @@ public class Inicio extends JFrame {
         contenedorPpal.add(txtSumatoriaJ1, constraints);
 
         lblSumatoriaJ2.setFont(new java.awt.Font("Century Gothic", 0, 18));
-        lblSumatoriaJ2.setText("Sumatoria Jugador 2:");
+        lblSumatoriaJ2.setText("Sumatoria Jugador 2: ");
         setConstraints(2, 2, 1, 1);
         contenedorPpal.add(lblSumatoriaJ2, constraints);
 
@@ -480,7 +737,7 @@ public class Inicio extends JFrame {
         contenedorPpal.add(txtSumatoriaJ2, constraints);
 
         lblTiempoRonda.setFont(new java.awt.Font("Century Gothic", 0, 18));
-        lblTiempoRonda.setText("Tiempo Ronda:");
+        lblTiempoRonda.setText("Tiempo Ronda: ");
         setConstraints(2, 3, 1, 1);
         contenedorPpal.add(lblTiempoRonda, constraints);
 
@@ -498,13 +755,13 @@ public class Inicio extends JFrame {
         //Espacio de los dados
         constraints.fill = GridBagConstraints.NONE;
         lblTurnoActual.setFont(new java.awt.Font("Century Gothic", 0, 18));
-        lblTurnoActual.setText("Jugador a Realizar el Lanzamiento:");
+        lblTurnoActual.setText("Jugador a Realizar el Lanzamiento: ");
         setConstraints(0, 5, 2, 1);
         contenedorPpal.add(lblTurnoActual, constraints);
 
         txtTurnoActual.setEditable(false);
         txtTurnoActual.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-        setConstraints(2, 5, 2, 1);
+        setConstraints(1, 5, 2, 1);
         txtTurnoActual.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         contenedorPpal.add(txtTurnoActual, constraints);
 
@@ -539,7 +796,7 @@ public class Inicio extends JFrame {
         btnSeguir.setText("Seguir");
         btnSeguir.setActionCommand("PASAR-TURNO");
         btnSeguir.addActionListener(gestorEventos);
-        setConstraints(2, 9, 1, 1);
+        setConstraints(3, 9, 1, 1);
         contenedorPpal.add(btnSeguir, constraints);
     }
 
@@ -580,6 +837,21 @@ public class Inicio extends JFrame {
         contenedorPpal.add(btnSeguir, constraints);
     }
 
+    public void primeraRonda(){
+        txtLanzamientos.setText(juegoCasino.getNumeroLanzamientosRonda() + "");
+        txtLanzamientosJ1.setText(0 + "");
+        txtLanzamientosJ2.setText(0 + "");
+        txtLanzamientosEmpate.setText(0 + "");
+        txtGanadorParcial.setText("Ninguno");
+        txtSumatoriaJ1.setText(0 + "");
+        txtSumatoriaJ2.setText(0 + "");
+        txtTiempoRonda.setText(0 + "");
+        txtTurnoActual.setText(juegoCasino.obtenerJugador(0).getNombre());
+        juegoCasino.obtenerJugador(0).setDebeLanzar(true);
+        btnSeguir.setEnabled(false);
+        juegoCasino.obtenerJugador(0).setPuntajeLanzamientoActual(0);
+        juegoCasino.obtenerJugador(1).setPuntajeLanzamientoActual(0);
+    }
    
 
     private void inicializarLanzamientoPorRonda() {
