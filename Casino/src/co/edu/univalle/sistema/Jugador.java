@@ -1,5 +1,7 @@
 package co.edu.univalle.sistema;
 
+import java.util.TimerTask;
+
 /**
  *
  * @author
@@ -120,5 +122,4 @@ public class Jugador {
 
     public void generarNombreAleatorio() {
     }
-
 }

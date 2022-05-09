@@ -1,6 +1,7 @@
 package co.edu.univalle.sistema;
 
 import java.util.ArrayList;
+import java.util.TimerTask;
 
 /**
  *
@@ -20,6 +21,16 @@ public class Sistema {
     private int tiempoDeJuego;
     private int lanzamientosEmpatados;
     private int numeroLanzamientoActual;
+    private boolean enJuego;
+    private int numeroLanzamientosCopia;
+
+    public int getNumeroLanzamientosCopia() {
+        return numeroLanzamientosCopia;
+    }
+
+    public void setNumeroLanzamientosCopia(int numeroLanzamientosCopia) {
+        this.numeroLanzamientosCopia = numeroLanzamientosCopia;
+    }
 
     public Sistema() {
         this.modoDeJuego = "";
@@ -27,6 +38,17 @@ public class Sistema {
         this.numeroRondas = 1;
         this.lanzamientosEmpatados = 0;
         this.numeroLanzamientosRonda = 0;
+        this.enJuego = false;
+        this.tiempoDeJuego = 0;
+        this.numeroLanzamientosCopia = 0;
+    }
+
+    public boolean isEnJuego() {
+        return enJuego;
+    }
+
+    public void setEnJuego(boolean enJuego) {
+        this.enJuego = enJuego;
     }
 
     public int getLanzamientosEmpatados() {
@@ -48,6 +70,14 @@ public class Sistema {
     public void agregarJugador(String nombre) {
         Jugador jugador = new Jugador(nombre);
         jugadores.add(jugador);
+    }
+
+    public ArrayList<Jugador> getJugadores() {
+        return jugadores;
+    }
+
+    public void setJugadores(ArrayList<Jugador> jugadores) {
+        this.jugadores = jugadores;
     }
 
     public void agregarMaquina() {
@@ -111,5 +141,4 @@ public class Sistema {
     public void eliminarTodosLosJugadores() {
         jugadores.clear();
     }
-
 }
