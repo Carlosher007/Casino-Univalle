@@ -319,6 +319,10 @@ public class Inicio extends JFrame {
                     SwingUtilities.updateComponentTreeUI(contenedorPpal);
                     boolean J1 = juegoCasino.obtenerJugador(0).isDebeLanzar();
                     boolean J2 = juegoCasino.obtenerJugador(1).isDebeLanzar();
+                    System.out.println(juegoCasino.getModoDeJuego());
+                    System.out.println("J2" + juegoCasino.obtenerJugador(1).isDebeLanzar());
+                    System.out.println("J1" + juegoCasino.obtenerJugador(0).isDebeLanzar());
+
                     if (juegoCasino.getModoDeJuego() == "Jugador VS Maquina" && J1 == true && tirohecho == true) {
                         pasoDeTurno(J1, J2);
                     } else if (juegoCasino.getModoDeJuego() == "Jugador VS Jugador") {
@@ -334,7 +338,8 @@ public class Inicio extends JFrame {
                 case "REINICIAR_FIN_JUEGO":
                     juegoCasino.setModoDeJuego("");
                     juegoCasino.getJugadores().clear();
-                    juegoCasino.setNumeroLanzamientosRonda(juegoCasino.getNumeroLanzamientosCopia());
+                    juegoCasino.setNumeroLanzamientosRonda(0);
+                    System.out.println(juegoCasino.getNumeroLanzamientosCopia());
                     juegoCasino.setTiempoDeJuego(0);
                     juegoCasino.setLanzamientosEmpatados(0);
                     juegoCasino.setNumeroLanzamientoActual(0);
@@ -342,14 +347,14 @@ public class Inicio extends JFrame {
                     limpiarVentana();
                     inicializarModoDeJuego();
                 case "JUGAR_DE_NUEVO":
-                    juegoCasino.setNumeroLanzamientosRonda(0);
+                    juegoCasino.setNumeroLanzamientosRonda(juegoCasino.getNumeroLanzamientosCopia());
                     juegoCasino.setTiempoDeJuego(0);
                     juegoCasino.setLanzamientosEmpatados(0);
                     juegoCasino.setNumeroLanzamientoActual(0);
                     juegoCasino.setEnJuego(true);
                     juegoCasino.setNumeroLanzamientosCopia(0);
                     juegoCasino.obtenerJugador(0).setDebeLanzar(false);
-                    juegoCasino.obtenerJugador(0).setDebeLanzar(true);
+                    juegoCasino.obtenerJugador(1).setDebeLanzar(false);
                     limpiarVentana();
                     crearInterfazJuego();
                     primeraRonda();
@@ -890,6 +895,9 @@ public class Inicio extends JFrame {
         btnSeguir.addActionListener(gestorEventos);
         setConstraints(3, 9, 1, 1);
         contenedorPpal.add(btnSeguir, constraints);
+
+        SwingUtilities.updateComponentTreeUI(contenedorPpal);
+
     }
 
     private void inicializarNombres() {
