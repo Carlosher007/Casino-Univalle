@@ -3,10 +3,12 @@ package co.edu.univalle.vistaCasino;
 import co.edu.univalle.sistema.Jugador;
 import co.edu.univalle.sistema.Maquina;
 import co.edu.univalle.sistema.Sistema;
+import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.*;
 import java.util.HashSet;
 import java.util.Random;
@@ -41,9 +43,16 @@ public class Inicio extends JFrame {
     /**
      * MODO DE JUEGO
      */
+    private JPanel panelCentro;
+    private JPanel panelImagenesI;
+    private JPanel panelImagenesD;
+    private JPanel panelTitulo;
+    private JPanel panelBotonesI;
+    private JPanel panelBotonesD;
     private JLabel lblMensaje;
     private JLabel lblImagenUs1;
     private JLabel lblImagenUs2;
+    private JLabel lblImagenUs3;
     private JLabel lblMaquina;
     private JButton btnDosPersonas;
     private JButton btnUnaPersona;
@@ -55,6 +64,8 @@ public class Inicio extends JFrame {
     private JTextField txtCampo2;
     private JButton btnSeguir;
     private JLabel lblMensaje2;
+    private JPanel panelCampos;
+    private JPanel panelnombres;
 
     // Elementos para el lanzamiento de dados y el resumen
     private JLabel lbldado1;
@@ -123,7 +134,7 @@ public class Inicio extends JFrame {
     }
 
     private void inicializarVentana() {
-        inicializarComponentes();
+        JFrame.setDefaultLookAndFeelDecorated(true);
         setLocationRelativeTo(null);
         setTitle("Casino Univalle"); //Título del JFrame
         setSize(900, 500); //Dimensiones del JFrame
@@ -131,6 +142,8 @@ public class Inicio extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Cerrar al salir
         setVisible(true); //Mostrar JFrame
         setIconImage(new ImageIcon(getClass().getResource("/imagenes/icono.png")).getImage());
+        inicializarComponentes();
+        SwingUtilities.updateComponentTreeUI(contenedorPpal);
     }
 
     public void inicializarComponentes() {
@@ -138,11 +151,88 @@ public class Inicio extends JFrame {
         /**
          * Inicializar para la ventana Inicio
          */
-//        EventosInternos gestorEventos = new EventosInternos();
-        lblTitulo = new JLabel();
-        lblLogo = new JLabel();
-        btnEmpezar = new JButton();
+        contenedorPpal = getContentPane();
+        contenedorPpal.setLayout(new GridBagLayout());
 
+        JLabel lblTemp1 = new JLabel("   ");
+        JLabel lblTemp2 = new JLabel("  ");
+        JLabel lblTemp3 = new JLabel("  ");
+        JLabel lblTemp4 = new JLabel("  ");
+        JLabel lblTemp5 = new JLabel("  ");
+
+        lblTitulo = new JLabel();
+        lblTitulo.setText("CASINO UNIVALLE");
+        lblTitulo.setFont(new java.awt.Font("Perpetua Titling MT", 0, 24)); // NOI18N
+        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        lblLogo = new JLabel();
+        Icon logo = new javax.swing.ImageIcon(getClass().getResource("/imagenes/icono.png"));
+        lblLogo.setIcon(logo);
+
+        btnEmpezar = new JButton();
+        btnEmpezar.setText("Empezar");
+        btnEmpezar.setActionCommand("EMPEZAR");
+        btnEmpezar.addActionListener(gestorEventos);
+        btnEmpezar.setFont(new java.awt.Font("Perpetua Titling MT", 0, 18)); // NOI18N
+        btnEmpezar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        JPanel panel = new JPanel();
+        GridBagLayout layout = new GridBagLayout();
+        panel.setLayout(layout);
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        // Put constraints on different buttons
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridheight = 1;
+        gbc.fill = GridBagConstraints.CENTER;
+        panel.add(lblTitulo, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 3;
+        gbc.fill = GridBagConstraints.CENTER;
+        panel.add(lblTemp3, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 3;
+        gbc.fill = GridBagConstraints.CENTER;
+        panel.add(lblTemp4, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 3;
+        gbc.fill = GridBagConstraints.CENTER;
+        panel.add(lblTemp5, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.fill = GridBagConstraints.CENTER;
+        panel.add(lblLogo, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.gridwidth = 3;
+        gbc.fill = GridBagConstraints.CENTER;
+        panel.add(lblTemp1, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        gbc.gridwidth = 3;
+        gbc.fill = GridBagConstraints.CENTER;
+        panel.add(lblTemp2, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 7;
+        gbc.fill = GridBagConstraints.CENTER;
+        gbc.gridwidth = 3;
+        panel.add(btnEmpezar, gbc);
+
+        setConstraints(0, 0, 1, 0);
+        contenedorPpal.add(panel, constraints);
+
+        /*
         contenedorPpal = getContentPane();
         contenedorPpal.setLayout(new GridBagLayout());
 
@@ -160,7 +250,7 @@ public class Inicio extends JFrame {
         btnEmpezar.addActionListener(gestorEventos);
         setConstraints(10, 20, 1, 0);
         contenedorPpal.add(btnEmpezar, constraints);
-
+         */
     }
 
     private void limpiarVentana() {
@@ -905,36 +995,66 @@ public class Inicio extends JFrame {
         contenedorPpal = getContentPane();
         contenedorPpal.setLayout(new GridBagLayout());
 
+        panelCentro = new JPanel();
+        panelCentro.setLayout(new GridLayout(5, 1)); // Vamos a agrupar paneles dentro de un "grid"
+
         lblTitulo = new JLabel();
         lblTitulo.setText("CASINO UNIVALLE");
-        setConstraints(0, 0, 1, 1);
-        contenedorPpal.add(lblTitulo, constraints);
+        lblTitulo.setFont(new java.awt.Font("Perpetua Titling MT", 0, 24)); // NOI18N
+        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         lblMensaje = new JLabel();
-        lblMensaje.setText("Nombre del Jugador 1");
-        setConstraints(2, 2, 2, 2);
-        contenedorPpal.add(lblMensaje, constraints);
+        lblMensaje.setText("Nombre del Jugador #1 ");
+        lblMensaje.setFont(new java.awt.Font("Arial Narrow", 0, 14)); // NOI18N
+        lblMensaje.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         txtCampo = new JTextField(10);
-        setConstraints(3, 4, 9, 5);
-        contenedorPpal.add(txtCampo, constraints);
-
-        if ("Jugador VS Jugador".equals(juegoCasino.getModoDeJuego())) {
-            lblMensaje2 = new JLabel();
-            lblMensaje2.setText("Nombre del jugador 2");
-            setConstraints(6, 6, 2, 2);
-            contenedorPpal.add(lblMensaje2, constraints);
-            txtCampo2 = new JTextField(10);
-            setConstraints(9, 10, 9, 5);
-            contenedorPpal.add(txtCampo2, constraints);
-        }
+        txtCampo.setFont(new java.awt.Font("Arial Narrow", 0, 14)); // NOI18N
+        txtCampo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         btnSeguir = new JButton();
+        btnSeguir.setFont(new java.awt.Font("Perpetua Titling MT", 0, 18)); // NOI18N
+        btnSeguir.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnSeguir.setText("Seguir");
         btnSeguir.setActionCommand("BOTON_SEGUIR_NOMBRES");
         btnSeguir.addActionListener(gestorEventos);
-        setConstraints(10, 15, 4, 4);
-        contenedorPpal.add(btnSeguir, constraints);
+
+        panelTitulo = new JPanel();
+        panelTitulo.setLayout(new FlowLayout(FlowLayout.CENTER));
+        panelTitulo.add(lblTitulo);
+
+        if ("Jugador VS Jugador".equals(juegoCasino.getModoDeJuego())) {
+            lblMensaje2 = new JLabel();
+            lblMensaje2.setText("Nombre del Jugador #2 ");
+            lblMensaje2.setFont(new java.awt.Font("Arial Narrow", 0, 14)); // NOI18N
+            lblMensaje2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+            txtCampo2 = new JTextField(10);
+            txtCampo2.setFont(new java.awt.Font("Arial Narrow", 0, 14)); // NOI18N
+            txtCampo2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            panelnombres = new JPanel();
+            panelnombres.setLayout(new GridLayout(2, 2, 50, 0));
+            panelnombres.add(lblMensaje);
+            panelnombres.add(txtCampo);
+            panelnombres.add(lblMensaje2);
+            panelnombres.add(txtCampo2);
+        } else {
+            panelnombres = new JPanel();
+            panelnombres.setLayout(new GridLayout(2, 2, 50, 0));
+            panelnombres.add(lblMensaje);
+            panelnombres.add(txtCampo);
+        }
+
+        panelBotonesI = new JPanel();
+        panelBotonesI.setLayout(new FlowLayout(FlowLayout.CENTER));
+        panelBotonesI.add(btnSeguir);
+        
+        panelCentro.add(panelTitulo);
+        panelCentro.add(panelnombres);
+        panelCentro.add(panelBotonesI);
+
+        contenedorPpal.add(panelCentro);
+
     }
 
     public void primeraRonda() {
@@ -958,28 +1078,49 @@ public class Inicio extends JFrame {
         contenedorPpal = getContentPane();
         contenedorPpal.setLayout(new GridBagLayout());
 
+        panelCentro = new JPanel();
+        panelCentro.setLayout(new GridLayout(5, 1)); // Vamos a agrupar paneles dentro de un "grid"
+
         lblTitulo = new JLabel();
         lblTitulo.setText("CASINO UNIVALLE");
-        setConstraints(0, 0, 1, 1);
-        contenedorPpal.add(lblTitulo, constraints);
+        lblTitulo.setFont(new java.awt.Font("Perpetua Titling MT", 0, 24)); // NOI18N
+        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         lblMensaje = new JLabel();
-        lblMensaje.setText("Digite el numero de lanzamientos por ronda, una vez...");
-        setConstraints(2, 2, 2, 2);
-        contenedorPpal.add(lblMensaje, constraints);
+        lblMensaje.setText("Digite el numero de lanzamientos por ronda");
+        lblMensaje.setFont(new java.awt.Font("Arial Narrow", 0, 14)); // NOI18N
+        lblMensaje.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         txtCampo = new JTextField(10);
-        setConstraints(5, 4, 9, 5);
-        contenedorPpal.add(txtCampo, constraints);
+        txtCampo.setFont(new java.awt.Font("Arial Narrow", 0, 14)); // NOI18N
+        txtCampo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         btnSeguir = new JButton();
+        btnSeguir.setFont(new java.awt.Font("Perpetua Titling MT", 0, 18)); // NOI18N
+        btnSeguir.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnSeguir.setText("Seguir");
-        setConstraints(7, 9, 2, 2);
         btnSeguir.setEnabled(true);
-        contenedorPpal.add(btnSeguir, constraints);
-
         btnSeguir.setActionCommand("BOTON_SEGUIR_LANZAMIENTO");
         btnSeguir.addActionListener(gestorEventos);
+
+        panelTitulo = new JPanel();
+        panelTitulo.setLayout(new FlowLayout(FlowLayout.CENTER));
+        panelTitulo.add(lblTitulo);
+
+        panelCampos = new JPanel();
+        panelCampos.setLayout(new GridLayout(2, 2, 50, 0));
+        panelCampos.add(lblMensaje);
+        panelCampos.add(txtCampo);
+
+        panelBotonesI = new JPanel();
+        panelBotonesI.setLayout(new FlowLayout(FlowLayout.CENTER));
+        panelBotonesI.add(btnSeguir);
+
+        panelCentro.add(panelTitulo);
+        panelCentro.add(panelCampos);
+        panelCentro.add(panelBotonesI);
+
+        contenedorPpal.add(panelCentro);
 
     }
 
@@ -988,39 +1129,74 @@ public class Inicio extends JFrame {
         contenedorPpal = getContentPane();
         contenedorPpal.setLayout(new GridBagLayout());
 
+        panelCentro = new JPanel();
+        panelCentro.setLayout(new GridLayout(5, 1)); // Vamos a agrupar paneles dentro de un "grid"
+
         lblTitulo = new JLabel();
         lblTitulo.setText("CASINO UNIVALLE");
-        setConstraints(0, 0, 1, 1);
-        contenedorPpal.add(lblTitulo, constraints);
+        lblTitulo.setFont(new java.awt.Font("Perpetua Titling MT", 0, 24)); // NOI18N
+        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         lblImagenUs1 = new JLabel();
         lblImagenUs1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/user.png")));
-        setConstraints(2, 2, 2, 2);
-        contenedorPpal.add(lblImagenUs1, constraints);
 
         lblImagenUs2 = new JLabel();
         lblImagenUs2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/user.png")));
-        setConstraints(5, 3, 2, 2);
-        contenedorPpal.add(lblImagenUs2, constraints);
+
+        lblImagenUs3 = new JLabel();
+        lblImagenUs3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/user.png")));
 
         lblMaquina = new JLabel();
         lblMaquina.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/machine.png")));
-        setConstraints(4, 4, 2, 2);
-        contenedorPpal.add(lblMaquina, constraints);
 
         btnDosPersonas = new JButton();
         btnDosPersonas.setText("Dos Jugadores");
         btnDosPersonas.setActionCommand("DOS_JUGADORES");
         btnDosPersonas.addActionListener(gestorEventos);
-        setConstraints(5, 7, 2, 2);
-        contenedorPpal.add(btnDosPersonas, constraints);
+        btnDosPersonas.setFont(new java.awt.Font("Perpetua Titling MT", 0, 24)); // NOI18N
+        btnDosPersonas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         btnUnaPersona = new JButton();
         btnUnaPersona.setText("Un Jugador");
         btnUnaPersona.setActionCommand("UN_JUGADOR");
         btnUnaPersona.addActionListener(gestorEventos);
-        setConstraints(5, 9, 2, 2);
-        contenedorPpal.add(btnUnaPersona, constraints);
+        btnUnaPersona.setFont(new java.awt.Font("Perpetua Titling MT", 0, 24)); // NOI18N
+        btnUnaPersona.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        panelTitulo = new JPanel();
+        panelTitulo.setLayout(new FlowLayout(FlowLayout.CENTER));
+        panelTitulo.add(lblTitulo);
+
+        panelImagenesI = new JPanel();
+        panelImagenesI.setLayout(new FlowLayout(FlowLayout.CENTER));
+        panelImagenesI.add(lblImagenUs1);
+        panelImagenesI.add(lblImagenUs2);
+
+        panelBotonesI = new JPanel();
+        panelBotonesI.setLayout(new FlowLayout(FlowLayout.CENTER));
+        panelBotonesI.add(btnDosPersonas);
+
+        panelImagenesD = new JPanel();
+        panelImagenesD.setLayout(new FlowLayout(FlowLayout.CENTER));
+        panelImagenesD.add(lblImagenUs3);
+        panelImagenesD.add(lblMaquina);
+
+        panelBotonesD = new JPanel();
+        panelBotonesD.setLayout(new FlowLayout(FlowLayout.CENTER));
+        panelBotonesD.add(btnUnaPersona);
+
+//        panelBotones = new JPanel();
+//        panelBotones.setLayout(new BorderLayout());
+//        panelBotones.add(btnDosPersonas, BorderLayout.WEST);
+//        panelBotones.add(btnUnaPersona, BorderLayout.EAST);
+        panelCentro.add(panelTitulo);
+        panelCentro.add(panelImagenesI);
+        panelCentro.add(panelBotonesI);
+        panelCentro.add(panelImagenesD);
+        panelCentro.add(panelBotonesD);
+
+        contenedorPpal.add(panelCentro);
+
     }
 
     private void inicializarTiempoJugador2() {
