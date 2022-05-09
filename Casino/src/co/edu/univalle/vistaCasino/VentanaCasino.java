@@ -237,8 +237,10 @@ public class VentanaCasino extends JFrame {
 
 
         contenedorPpal = getContentPane();
-        contenedorPpal.setLayout(new GridLayout(4, 2));
+        contenedorPpal.setLayout(new GridBagLayout());
 
+        
+        
         contenedorPpal.add(lblModoJuego);
         contenedorPpal.add(txtModoJuego);
         contenedorPpal.add(lblNombre1);

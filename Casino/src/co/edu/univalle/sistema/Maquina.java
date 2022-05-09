@@ -14,7 +14,7 @@ import java.util.Random;
  */
 public class Maquina extends Jugador {
 
-    ArrayList<String> posiblesNombres = new ArrayList<>(Arrays.asList("Aczino", "Gazir", "VallesT", "Skone",
+    ArrayList<String> posiblesNombres = new ArrayList<>(Arrays.asList("Aczino", "Chuty","Teorema","Gazir", "MetaLinguistica","VallesT", "Skone",
             "Jaze", "MuMaKSO"));
     Random aleatorio = new Random();
 

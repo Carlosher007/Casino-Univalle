@@ -4,6 +4,7 @@
  */
 package co.edu.univalle.main;
 
+import co.edu.univalle.vistaCasino.Inicio;
 import co.edu.univalle.vistaCasino.VentanaCasino;
 
 /**
@@ -17,7 +18,8 @@ public class Main {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        VentanaCasino miCasino = new VentanaCasino();
+        //VentanaCasino miCasino = new VentanaCasino();
+        Inicio miCasino = new Inicio();
     }
     
 }
