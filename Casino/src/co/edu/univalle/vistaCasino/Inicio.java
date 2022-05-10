@@ -3,46 +3,48 @@ package co.edu.univalle.vistaCasino;
 import co.edu.univalle.sistema.Jugador;
 import co.edu.univalle.sistema.Maquina;
 import co.edu.univalle.sistema.Sistema;
-import java.awt.BorderLayout;
+
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.*;
-import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
-import java.util.TimerTask;
 import javax.swing.*;
 import javax.swing.SwingUtilities;
 
 /**
- *
- * @author Carlos Andres Hernandez Agudelo , Brayan Sanchez
- */
+    Laboratorio N.1: primer miniproyecto.
+    Archivo: Inicio.java
+    Autores (Grupo 01 POE):
+      -Brayan Andrés Sánchez Lozano <brayan.andres.sanchez@correounivalle.edu.co>
+      -Carlos Andrés Hernandez Agudelo <carlos.hernandez.agudelo@correounivalle.edu.co>
+    Fecha creación: 07-05-2022
+    Fecha última modificación: 10-02-2022
+    Docente:
+      -Luis Romo <luis.romo@correounivalle.edu.co>
+*/
+
 public class Inicio extends JFrame {
 
-    private Sistema juegoCasino = new Sistema();
+    private final Sistema juegoCasino = new Sistema();
+
     //Declaracion de variables                    
     Random aleatorio = new Random();
     GridBagConstraints constraints = new GridBagConstraints();
     EventosInternos gestorEventos = new EventosInternos();
 
-    //tiempo
+    //Timer para iniciar la contabilización
     private Timer tiempo;
 
-    /**
-     * INICIO
-     */
+    //Componentes de la ventana de bienvenida al juego
     private JLabel lblTitulo;
     private JLabel lblLogo;
     private JButton btnEmpezar;
     private Container contenedorPpal;
 
-    /**
-     * MODO DE JUEGO
-     */
+    //Componentes de la ventana para escoger el modo de juego
     private JPanel panelCentro;
     private JPanel panelImagenesI;
     private JPanel panelImagenesD;
@@ -57,9 +59,7 @@ public class Inicio extends JFrame {
     private JButton btnDosPersonas;
     private JButton btnUnaPersona;
 
-    /**
-     * LANZAMIENTOS, RONDA Y NOMBRES
-     */
+    //Componentes dispuestos para ingresar la información requerida para continuar con el juego
     private JTextField txtCampo;
     private JTextField txtCampo2;
     private JButton btnSeguir;
@@ -67,13 +67,14 @@ public class Inicio extends JFrame {
     private JPanel panelCampos;
     private JPanel panelnombres;
 
-    // Elementos para el lanzamiento de dados y el resumen
+    //Componentes para el lanzamiento de dados
     private JLabel lbldado1;
     private JLabel lbldado2;
     private JButton btnLanzar;
     private JTextField txtResultado;
     private JPanel flowPanel;
 
+    //Componentes con los que se brinda un resumen de la selección de modo de juego
     private JLabel lblModoJuego;
     private JTextField txtModoJuego;
     private JLabel lblNombre1;
@@ -87,6 +88,7 @@ public class Inicio extends JFrame {
     private JButton btnSeguirResumen;
     private JButton btnReiniciarResumen;
 
+    //Componentes con los que se brindan diversos datos en el desarrollo del juego
     private JLabel lblLanzamientos;
     private JTextField txtLanzamientos;
     private JLabel lblLanzamientosJ1;
@@ -103,22 +105,19 @@ public class Inicio extends JFrame {
     private JTextField txtSumatoriaJ2;
     private JLabel lblTiempoRonda;
     private JTextField txtTiempoRonda;
-    private JLabel lblTiempoJ1;
-    private JTextField txtTiempoJ1;
-    private JLabel lblTiempoJ2;
-    private JTextField txtTiempoJ2;
     private JLabel lblTurnoActual;
     private JTextField txtTurnoActual;
-
     private JButton btnJugarDeNuevo;
     private JButton btnSalir;
 
+    //Variables necesarias para realizar acciones con la lógica del programa
     private int empates;
     private int sumatoriaJ1;
     private int sumatoriaJ2;
     private int resultado;
     private boolean tirohecho = false;
 
+    //Función que facilita el uso de los constraints para el GridBagLayout
     private void setConstraints(int x, int y, int hx, int hy) {
         constraints.gridx = x;
         constraints.gridy = y;
@@ -126,31 +125,54 @@ public class Inicio extends JFrame {
         constraints.gridheight = hy;
     }
 
-    /**
-     * Creamos una ventana para casino
-     */
+    //Creación de la ventana para el casino
     public Inicio() {
         inicializarVentana();
     }
 
+    //Características iniciales de la ventana
     private void inicializarVentana() {
         JFrame.setDefaultLookAndFeelDecorated(true);
         setLocationRelativeTo(null);
-        setTitle("Casino Univalle"); //Título del JFrame
-        setSize(900, 500); //Dimensiones del JFrame
+        setTitle("Casino Univalle");
+        setSize(900, 500);
         setLocation(100, 100);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Cerrar al salir
-        setVisible(true); //Mostrar JFrame
+        setVisible(true);
         setIconImage(new ImageIcon(getClass().getResource("/imagenes/icono.png")).getImage());
         inicializarComponentes();
+        t = new Timer(5, acciones);
         SwingUtilities.updateComponentTreeUI(contenedorPpal);
     }
 
-    public void inicializarComponentes() {
+    //SwingUtilities.updateComponentTreeUI(contenedorPpal); es utilizado para forzar al contenedor a actualizarse (Y así mostrar cambios)
 
-        /**
-         * Inicializar para la ventana Inicio
-         */
+    //Timer utilizado para contabilizar el tiempo de las rondas
+    private Timer t;
+    private int h, m, s, cs;
+    private final ActionListener acciones = new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent ae){
+            cs++;
+            if(cs == 60){
+                cs = 0;
+                ++s;
+                cronometro(m, s);
+            }
+            if(s==60){
+                s = 0;
+                ++m;
+                cronometro(m, s);
+            }
+            if(m==60){
+                m=0;
+                ++h;
+            }
+        }
+    };
+
+    //Inicializamos los componentes para la ventana Inicio
+    public void inicializarComponentes() {
         contenedorPpal = getContentPane();
         contenedorPpal.setLayout(new GridBagLayout());
 
@@ -231,26 +253,6 @@ public class Inicio extends JFrame {
 
         setConstraints(0, 0, 1, 0);
         contenedorPpal.add(panel, constraints);
-
-        /*
-        contenedorPpal = getContentPane();
-        contenedorPpal.setLayout(new GridBagLayout());
-
-        lblTitulo.setText("CASINO UNIVALLE");
-        setConstraints(0, 0, 2, 1);
-        contenedorPpal.add(lblTitulo, constraints);
-
-        Icon logo = new javax.swing.ImageIcon(getClass().getResource("/imagenes/icono.png"));
-        lblLogo.setIcon(logo);
-        setConstraints(0, 1, 2, 2);
-        contenedorPpal.add(lblLogo, constraints);
-
-        btnEmpezar.setText("Empezar");
-        btnEmpezar.setActionCommand("EMPEZAR");
-        btnEmpezar.addActionListener(gestorEventos);
-        setConstraints(10, 20, 1, 0);
-        contenedorPpal.add(btnEmpezar, constraints);
-         */
     }
 
     private void limpiarVentana() {
@@ -305,16 +307,13 @@ public class Inicio extends JFrame {
                     if ("Jugador VS Jugador".equals(juegoCasino.getModoDeJuego())) {
                         String nombre1 = txtCampo.getText();
                         String nombre2 = txtCampo2.getText();
-                        if (nombre1 == null || "".equals(nombre1) || nombre2 == null || "".equals(nombre2) || nombre1==nombre2) {
+                        if (nombre1 == null || "".equals(nombre1) || nombre2 == null || "".equals(nombre2) || nombre1.equals(nombre2)) {
                             JOptionPane.showMessageDialog(Inicio.this, "Ingresa nombres validos", "Casino Univalle", JOptionPane.WARNING_MESSAGE);
                         } else {
                             juegoCasino.agregarJugador(nombre1);
                             juegoCasino.agregarJugador(nombre2);
-
                             limpiarVentana();
                             resumen();
-                            //INICIALIZAR TIEMPO EN GENERAL
-
                             break;
                         }
                     } else if ("Jugador VS Maquina".equals(juegoCasino.getModoDeJuego())) {
@@ -413,9 +412,9 @@ public class Inicio extends JFrame {
                     System.out.println("J2" + juegoCasino.obtenerJugador(1).isDebeLanzar());
                     System.out.println("J1" + juegoCasino.obtenerJugador(0).isDebeLanzar());
 
-                    if (juegoCasino.getModoDeJuego() == "Jugador VS Maquina" && J1 == true && tirohecho == true) {
+                    if ("Jugador VS Maquina".equals(juegoCasino.getModoDeJuego()) && J1 == true && tirohecho == true) {
                         pasoDeTurno(J1, J2);
-                    } else if (juegoCasino.getModoDeJuego() == "Jugador VS Jugador") {
+                    } else if ("Jugador VS Jugador".equals(juegoCasino.getModoDeJuego())) {
                         pasoDeTurno(J1, J2);
                     }
                     btnLanzar.setEnabled(true);
@@ -475,7 +474,7 @@ public class Inicio extends JFrame {
     }
 
     public void finDelJuego() {
-
+        t.stop();
         juegoCasino.setEnJuego(false);
         juegoCasino.obtenerJugador(0).setDebeLanzar(false);
         juegoCasino.obtenerJugador(1).setDebeLanzar(false);
@@ -488,7 +487,11 @@ public class Inicio extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 limpiarVentana();
                 SwingUtilities.updateComponentTreeUI(contenedorPpal);
-                JOptionPane.showMessageDialog(Inicio.this, "¡Felicidades " + txtGanadorParcial.getText() + ", ganaste!", "Casino Univalle", JOptionPane.WARNING_MESSAGE);
+                if(!"Ninguno".equals(txtGanadorParcial.getText())){
+                    JOptionPane.showMessageDialog(Inicio.this, "¡Felicidades " + txtGanadorParcial.getText() + ", ganaste!", "Casino Univalle", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(Inicio.this, "¡Fue un gran duelo!, quedaron empatados.", "Casino Univalle", JOptionPane.WARNING_MESSAGE);
+                }
                 lblGanadorParcial.setText("Jugador Vencedor: ");
                 setConstraints(0, 1, 2, 1);
                 contenedorPpal.add(lblGanadorParcial, constraints);
@@ -561,7 +564,7 @@ public class Inicio extends JFrame {
                 txtTiempoRonda.setEditable(false);
                 txtTiempoRonda.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
                 setConstraints(3, 4, 1, 1);
-                txtTiempoRonda.setText(juegoCasino.getTiempoDeJuego() + " segundos");
+                txtTiempoRonda.setText(txtTiempoRonda.getText());
                 txtTiempoRonda.setBorder(javax.swing.BorderFactory.createEmptyBorder());
                 contenedorPpal.add(txtTiempoRonda, constraints);
 
@@ -659,7 +662,6 @@ public class Inicio extends JFrame {
         int puntajeJ2 = juegoCasino.obtenerJugador(1).getPuntajeLanzamientoActual();
 
         if (J1 == true) {
-            txtTiempoRonda.setText(juegoCasino.getTiempoDeJuego() + "");
             puntajeJ1 = resultado;
             lanzamientosRealizadosJ1 += 1;
             juegoCasino.obtenerJugador(0).setLanzamientosHechos(lanzamientosRealizadosJ1);
@@ -676,7 +678,6 @@ public class Inicio extends JFrame {
                 tiroDeMaquina();
             }
         } else {
-            txtTiempoRonda.setText(juegoCasino.getTiempoDeJuego() + "");
             SwingUtilities.updateComponentTreeUI(contenedorPpal);
             puntajeJ2 = resultado;
             if (puntajeJ1 == puntajeJ2) {
@@ -694,7 +695,6 @@ public class Inicio extends JFrame {
                 JOptionPane.showMessageDialog(Inicio.this, "¡Empate! Se repetirán los lanzamientos", "Casino Univalle", JOptionPane.WARNING_MESSAGE);
                 ganadorParcial(sumatoriaJ1, sumatoriaJ2);
             } else {
-                txtTiempoRonda.setText(juegoCasino.getTiempoDeJuego() + "");
                 lanzamientosRestantes -= 1;
                 juegoCasino.setNumeroLanzamientosRonda(lanzamientosRestantes);
                 txtLanzamientos.setText(lanzamientosRestantes + "");
@@ -836,7 +836,7 @@ public class Inicio extends JFrame {
     }
 
     public void crearInterfazJuego() {
-
+        t.start();
         juegoCasino.setEnJuego(true);
 
         tiempo = new Timer(1000, null);
@@ -1253,6 +1253,12 @@ public class Inicio extends JFrame {
         if (juegoCasino.isEnJuego()) {
             juegoCasino.setTiempoDeJuego(juegoCasino.getTiempoDeJuego() + 1);
         }
+    }
+
+    private void cronometro(int m, int s){
+        SwingUtilities.updateComponentTreeUI(contenedorPpal);
+        txtTiempoRonda.setText(m + " min, " + s + " segs");
+        SwingUtilities.updateComponentTreeUI(contenedorPpal);
     }
 
 }
