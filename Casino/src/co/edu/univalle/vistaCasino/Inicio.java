@@ -3,14 +3,19 @@ package co.edu.univalle.vistaCasino;
 import co.edu.univalle.sistema.Jugador;
 import co.edu.univalle.sistema.Maquina;
 import co.edu.univalle.sistema.Sistema;
+import java.awt.BorderLayout;
 
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Random;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.SwingUtilities;
 
@@ -132,6 +137,23 @@ public class Inicio extends JFrame {
 
     //Características iniciales de la ventana
     private void inicializarVentana() {
+        BufferedImage img;
+        try
+        {
+            img = ImageIO.read(getClass().getResource("/imagenes/fondodados.png"));
+
+            setLayout(new BorderLayout());
+            setContentPane(new JLabel(new ImageIcon(img)));
+            Dimension dim = new Dimension(img.getWidth(), img.getHeight());
+            setSize(dim);
+            setMinimumSize(dim);
+            setMaximumSize(dim);
+            setResizable(false);
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
         JFrame.setDefaultLookAndFeelDecorated(true);
         setLocationRelativeTo(null);
         setTitle("Casino Univalle");
@@ -202,6 +224,7 @@ public class Inicio extends JFrame {
         GridBagLayout layout = new GridBagLayout();
         panel.setLayout(layout);
         GridBagConstraints gbc = new GridBagConstraints();
+        panel.setOpaque(false);
 
         // Put constraints on different buttons
         gbc.gridx = 0;
@@ -692,7 +715,9 @@ public class Inicio extends JFrame {
                 SwingUtilities.updateComponentTreeUI(contenedorPpal);
                 empates += 1;
                 txtLanzamientosEmpate.setText(empates + "");
-                JOptionPane.showMessageDialog(Inicio.this, "¡Empate! Se repetirán los lanzamientos", "Casino Univalle", JOptionPane.WARNING_MESSAGE);
+                if(lanzamientosRealizadosJ1 != 0){
+                    JOptionPane.showMessageDialog(Inicio.this, "¡Empate! Se repetirán los lanzamientos", "Casino Univalle", JOptionPane.WARNING_MESSAGE);
+                }
                 ganadorParcial(sumatoriaJ1, sumatoriaJ2);
             } else {
                 lanzamientosRestantes -= 1;
@@ -799,6 +824,7 @@ public class Inicio extends JFrame {
 
         panelCentro = new JPanel();
         panelCentro.setLayout(new GridLayout(5, 1)); // Vamos a agrupar paneles dentro de un "grid"
+        panelCentro.setOpaque(false);
 
         lblTitulo = new JLabel();
         lblTitulo.setText("CASINO UNIVALLE");
@@ -808,6 +834,7 @@ public class Inicio extends JFrame {
         panelTitulo = new JPanel();
         panelTitulo.setLayout(new FlowLayout(FlowLayout.CENTER));
         panelTitulo.add(lblTitulo);
+        panelTitulo.setOpaque(false);
 
         panelnombres = new JPanel();
         panelnombres.setLayout(new GridLayout(5, 2, 50, 0));
@@ -821,15 +848,18 @@ public class Inicio extends JFrame {
         panelnombres.add(txtNumeroLanzamientos);
         panelnombres.add(lblRondas);
         panelnombres.add(txtRondas);
+        panelnombres.setOpaque(false);
 
         panelBotonesI = new JPanel();
         panelBotonesI.setLayout(new FlowLayout(FlowLayout.CENTER));
         panelBotonesI.add(btnSeguirResumen);
         panelBotonesI.add(btnReiniciarResumen);
+        panelBotonesI.setOpaque(false);
 
         panelCentro.add(panelTitulo);
         panelCentro.add(panelnombres);
         panelCentro.add(panelBotonesI);
+        panelCentro.setOpaque(false);
 
         contenedorPpal.add(panelCentro);
 
@@ -1056,6 +1086,7 @@ public class Inicio extends JFrame {
         panelTitulo = new JPanel();
         panelTitulo.setLayout(new FlowLayout(FlowLayout.CENTER));
         panelTitulo.add(lblTitulo);
+        panelTitulo.setOpaque(false);
 
         if ("Jugador VS Jugador".equals(juegoCasino.getModoDeJuego())) {
             lblMensaje2 = new JLabel();
@@ -1072,20 +1103,24 @@ public class Inicio extends JFrame {
             panelnombres.add(txtCampo);
             panelnombres.add(lblMensaje2);
             panelnombres.add(txtCampo2);
+            panelnombres.setOpaque(false);
         } else {
             panelnombres = new JPanel();
             panelnombres.setLayout(new GridLayout(2, 2, 50, 0));
             panelnombres.add(lblMensaje);
             panelnombres.add(txtCampo);
+            panelnombres.setOpaque(false);
         }
 
         panelBotonesI = new JPanel();
         panelBotonesI.setLayout(new FlowLayout(FlowLayout.CENTER));
         panelBotonesI.add(btnSeguir);
+        panelBotonesI.setOpaque(false);
 
         panelCentro.add(panelTitulo);
         panelCentro.add(panelnombres);
         panelCentro.add(panelBotonesI);
+        panelCentro.setOpaque(false);
 
         contenedorPpal.add(panelCentro);
 
@@ -1140,19 +1175,23 @@ public class Inicio extends JFrame {
         panelTitulo = new JPanel();
         panelTitulo.setLayout(new FlowLayout(FlowLayout.CENTER));
         panelTitulo.add(lblTitulo);
+        panelTitulo.setOpaque(false);
 
         panelCampos = new JPanel();
         panelCampos.setLayout(new GridLayout(2, 2, 50, 0));
         panelCampos.add(lblMensaje);
         panelCampos.add(txtCampo);
+        panelCampos.setOpaque(false);
 
         panelBotonesI = new JPanel();
         panelBotonesI.setLayout(new FlowLayout(FlowLayout.CENTER));
         panelBotonesI.add(btnSeguir);
+        panelBotonesI.setOpaque(false);
 
         panelCentro.add(panelTitulo);
         panelCentro.add(panelCampos);
         panelCentro.add(panelBotonesI);
+        panelCentro.setOpaque(false);
 
         contenedorPpal.add(panelCentro);
 
@@ -1200,24 +1239,30 @@ public class Inicio extends JFrame {
         panelTitulo = new JPanel();
         panelTitulo.setLayout(new FlowLayout(FlowLayout.CENTER));
         panelTitulo.add(lblTitulo);
+        panelTitulo.setOpaque(false);
 
         panelImagenesI = new JPanel();
         panelImagenesI.setLayout(new FlowLayout(FlowLayout.CENTER));
         panelImagenesI.add(lblImagenUs1);
         panelImagenesI.add(lblImagenUs2);
+        panelImagenesI.setOpaque(false);
 
         panelBotonesI = new JPanel();
         panelBotonesI.setLayout(new FlowLayout(FlowLayout.CENTER));
         panelBotonesI.add(btnDosPersonas);
+        panelBotonesI.setOpaque(false);
 
         panelImagenesD = new JPanel();
         panelImagenesD.setLayout(new FlowLayout(FlowLayout.CENTER));
         panelImagenesD.add(lblImagenUs3);
         panelImagenesD.add(lblMaquina);
+        panelImagenesD.setOpaque(false);
 
         panelBotonesD = new JPanel();
         panelBotonesD.setLayout(new FlowLayout(FlowLayout.CENTER));
         panelBotonesD.add(btnUnaPersona);
+        panelBotonesD.setOpaque(false);
+        
 
 //        panelBotones = new JPanel();
 //        panelBotones.setLayout(new BorderLayout());
@@ -1228,6 +1273,7 @@ public class Inicio extends JFrame {
         panelCentro.add(panelBotonesI);
         panelCentro.add(panelImagenesD);
         panelCentro.add(panelBotonesD);
+        panelCentro.setOpaque(false);
 
         contenedorPpal.add(panelCentro);
 
