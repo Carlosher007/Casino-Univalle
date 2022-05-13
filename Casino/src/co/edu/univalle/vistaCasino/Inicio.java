@@ -20,17 +20,12 @@ import javax.swing.*;
 import javax.swing.SwingUtilities;
 
 /**
-    Laboratorio N.1: primer miniproyecto.
-    Archivo: Inicio.java
-    Autores (Grupo 01 POE):
-      -Brayan Andrés Sánchez Lozano <brayan.andres.sanchez@correounivalle.edu.co>
-      -Carlos Andrés Hernandez Agudelo <carlos.hernandez.agudelo@correounivalle.edu.co>
-    Fecha creación: 07-05-2022
-    Fecha última modificación: 10-02-2022
-    Docente:
-      -Luis Romo <luis.romo@correounivalle.edu.co>
-*/
-
+ * Laboratorio N.1: primer miniproyecto. Archivo: Inicio.java Autores (Grupo 01 POE): -Brayan Andrés
+ * Sánchez Lozano <brayan.andres.sanchez@correounivalle.edu.co>
+ * -Carlos Andrés Hernandez Agudelo <carlos.hernandez.agudelo@correounivalle.edu.co>
+ * Fecha creación: 07-05-2022 Fecha última modificación: 10-02-2022 Docente: -Luis Romo
+ * <luis.romo@correounivalle.edu.co>
+ */
 public class Inicio extends JFrame {
 
     private final Sistema juegoCasino = new Sistema();
@@ -138,8 +133,7 @@ public class Inicio extends JFrame {
     //Características iniciales de la ventana
     private void inicializarVentana() {
         BufferedImage img;
-        try
-        {
+        try {
             img = ImageIO.read(getClass().getResource("/imagenes/fondodados.png"));
 
             setLayout(new BorderLayout());
@@ -149,9 +143,7 @@ public class Inicio extends JFrame {
             setMinimumSize(dim);
             setMaximumSize(dim);
             setResizable(false);
-        }
-        catch(IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         JFrame.setDefaultLookAndFeelDecorated(true);
@@ -168,26 +160,25 @@ public class Inicio extends JFrame {
     }
 
     //SwingUtilities.updateComponentTreeUI(contenedorPpal); es utilizado para forzar al contenedor a actualizarse (Y así mostrar cambios)
-
     //Timer utilizado para contabilizar el tiempo de las rondas
     private Timer t;
     private int h, m, s, cs;
-    private final ActionListener acciones = new ActionListener(){
+    private final ActionListener acciones = new ActionListener() {
         @Override
-        public void actionPerformed(ActionEvent ae){
+        public void actionPerformed(ActionEvent ae) {
             cs++;
-            if(cs == 60){
+            if (cs == 60) {
                 cs = 0;
                 ++s;
                 cronometro(m, s);
             }
-            if(s==60){
+            if (s == 60) {
                 s = 0;
                 ++m;
                 cronometro(m, s);
             }
-            if(m==60){
-                m=0;
+            if (m == 60) {
+                m = 0;
                 ++h;
             }
         }
@@ -214,11 +205,19 @@ public class Inicio extends JFrame {
         lblLogo.setIcon(logo);
 
         btnEmpezar = new JButton();
-        btnEmpezar.setText("Empezar");
         btnEmpezar.setActionCommand("EMPEZAR");
         btnEmpezar.addActionListener(gestorEventos);
         btnEmpezar.setFont(new java.awt.Font("Perpetua Titling MT", 0, 18)); // NOI18N
         btnEmpezar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        btnEmpezar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/unlock_norm.png"))); // NOI18N
+        btnEmpezar.setAutoscrolls(true);
+        btnEmpezar.setBorder(null);
+        btnEmpezar.setBorderPainted(false);
+        btnEmpezar.setContentAreaFilled(false);
+        btnEmpezar.setFocusPainted(false);
+        btnEmpezar.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/unlock_press.png"))); // NOI18N
+        btnEmpezar.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/unlock_roll.png"))); // NOI18N
 
         JPanel panel = new JPanel();
         GridBagLayout layout = new GridBagLayout();
@@ -510,7 +509,7 @@ public class Inicio extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 limpiarVentana();
                 SwingUtilities.updateComponentTreeUI(contenedorPpal);
-                if(!"Ninguno".equals(txtGanadorParcial.getText())){
+                if (!"Ninguno".equals(txtGanadorParcial.getText())) {
                     JOptionPane.showMessageDialog(Inicio.this, "¡Felicidades " + txtGanadorParcial.getText() + ", ganaste!", "Casino Univalle", JOptionPane.WARNING_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(Inicio.this, "¡Fue un gran duelo!, quedaron empatados.", "Casino Univalle", JOptionPane.WARNING_MESSAGE);
@@ -616,28 +615,53 @@ public class Inicio extends JFrame {
                 contenedorPpal.add(txtTiempoJ1, constraints);
                  */
                 flowPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 10));
+                flowPanel.setOpaque(false);
                 flowPanel.setBorder(BorderFactory.createEmptyBorder());
                 setConstraints(0, 5, 4, 1);
                 contenedorPpal.add(flowPanel, constraints);
 
                 btnJugarDeNuevo.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-                btnJugarDeNuevo.setText("Jugar de Nuevo");
+                // btnJugarDeNuevo.setText("Jugar de Nuevo");
                 btnJugarDeNuevo.setActionCommand("JUGAR_DE_NUEVO");
                 btnJugarDeNuevo.addActionListener(gestorEventos);
+                btnReiniciarResumen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/nuevo_norm.png"))); // NOI18N
+                btnReiniciarResumen.setAutoscrolls(true);
+                btnReiniciarResumen.setBorder(null);
+                btnReiniciarResumen.setBorderPainted(false);
+                btnReiniciarResumen.setContentAreaFilled(false);
+                btnReiniciarResumen.setFocusPainted(false);
+                btnReiniciarResumen.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/nuevo_press.png"))); // NOI18N
+                btnReiniciarResumen.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/nuevo_roll.png"))); // NOI18N
                 setConstraints(0, 6, 1, 1);
                 contenedorPpal.add(btnJugarDeNuevo, constraints);
 
                 btnReiniciarResumen.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-                btnReiniciarResumen.setText("Reiniciar Casino");
+                // btnReiniciarResumen.setText("Reiniciar Casino");
                 btnReiniciarResumen.setActionCommand("REINICIAR_FIN_JUEGO"); //FALTA CREAR ESTE COMANDO
                 btnReiniciarResumen.addActionListener(gestorEventos);
+                btnJugarDeNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/vista_prev_norm.png"))); // NOI18N
+                btnJugarDeNuevo.setAutoscrolls(true);
+                btnJugarDeNuevo.setBorder(null);
+                btnJugarDeNuevo.setBorderPainted(false);
+                btnJugarDeNuevo.setContentAreaFilled(false);
+                btnJugarDeNuevo.setFocusPainted(false);
+                btnJugarDeNuevo.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/vista_prev_press.png"))); // NOI18N
+                btnJugarDeNuevo.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/vista_prev_roll.png"))); // NOI18N
                 setConstraints(1, 6, 1, 1);
                 contenedorPpal.add(btnReiniciarResumen, constraints);
 
                 btnSalir.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-                btnSalir.setText("Finalizar");
+                //btnSalir.setText("Finalizar");
                 btnSalir.setActionCommand("SALIR_FIN_JUEGO"); //FALTA CREAR ESTE COMANDO
                 btnSalir.addActionListener(gestorEventos);
+                btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/salir_norm.png"))); // NOI18N
+                btnSalir.setAutoscrolls(true);
+                btnSalir.setBorder(null);
+                btnSalir.setBorderPainted(false);
+                btnSalir.setContentAreaFilled(false);
+                btnSalir.setFocusPainted(false);
+                btnSalir.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/salir_press.png"))); // NOI18N
+                btnSalir.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/salir_roll.png"))); // NOI18N
                 setConstraints(2, 6, 1, 1);
                 contenedorPpal.add(btnSalir, constraints);
 
@@ -715,7 +739,7 @@ public class Inicio extends JFrame {
                 SwingUtilities.updateComponentTreeUI(contenedorPpal);
                 empates += 1;
                 txtLanzamientosEmpate.setText(empates + "");
-                if(lanzamientosRealizadosJ1 != 0){
+                if (lanzamientosRealizadosJ1 != 0) {
                     JOptionPane.showMessageDialog(Inicio.this, "¡Empate! Se repetirán los lanzamientos", "Casino Univalle", JOptionPane.WARNING_MESSAGE);
                 }
                 ganadorParcial(sumatoriaJ1, sumatoriaJ2);
@@ -811,16 +835,32 @@ public class Inicio extends JFrame {
         btnSeguirResumen = new javax.swing.JButton();
         btnSeguirResumen.setFont(new java.awt.Font("Perpetua Titling MT", 0, 18)); // NOI18N
         btnSeguirResumen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnSeguirResumen.setText("Seguir");
+        //btnSeguirResumen.setText("Seguir");
         btnSeguirResumen.setActionCommand("LIMPIAR+CREAR");
         btnSeguirResumen.addActionListener(gestorEventos);
+        btnSeguirResumen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/acep_norm.png"))); // NOI18N
+        btnSeguirResumen.setAutoscrolls(true);
+        btnSeguirResumen.setBorder(null);
+        btnSeguirResumen.setBorderPainted(false);
+        btnSeguirResumen.setContentAreaFilled(false);
+        btnSeguirResumen.setFocusPainted(false);
+        btnSeguirResumen.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/acep_press.png"))); // NOI18N
+        btnSeguirResumen.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/acep_roll.png"))); // NOI18N
 
         btnReiniciarResumen = new javax.swing.JButton();
         btnReiniciarResumen.setFont(new java.awt.Font("Perpetua Titling MT", 0, 18)); // NOI18N
         btnReiniciarResumen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnReiniciarResumen.setText("Reiniciar");
+        //btnReiniciarResumen.setText("Reiniciar");
         btnReiniciarResumen.setActionCommand("LIMPIAR_RESUMEN");
         btnReiniciarResumen.addActionListener(gestorEventos);
+        btnReiniciarResumen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/limpiar_norm.png"))); // NOI18N
+        btnReiniciarResumen.setAutoscrolls(true);
+        btnReiniciarResumen.setBorder(null);
+        btnReiniciarResumen.setBorderPainted(false);
+        btnReiniciarResumen.setContentAreaFilled(false);
+        btnReiniciarResumen.setFocusPainted(false);
+        btnReiniciarResumen.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/limpiar_press.png"))); // NOI18N
+        btnReiniciarResumen.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/limpiar_roll.png"))); // NOI18N
 
         panelCentro = new JPanel();
         panelCentro.setLayout(new GridLayout(5, 1)); // Vamos a agrupar paneles dentro de un "grid"
@@ -915,6 +955,7 @@ public class Inicio extends JFrame {
         contenedorPpal.add(lblLanzamientos, constraints);
 
         txtLanzamientos.setEditable(false);
+        txtLanzamientos.setOpaque(false);
         txtLanzamientos.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         setConstraints(1, 0, 1, 1);
         txtLanzamientos.setBorder(javax.swing.BorderFactory.createEmptyBorder());
@@ -926,6 +967,7 @@ public class Inicio extends JFrame {
         contenedorPpal.add(lblLanzamientosJ1, constraints);
 
         txtLanzamientosJ1.setEditable(false);
+        txtLanzamientosJ1.setOpaque(false);
         txtLanzamientosJ1.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         setConstraints(1, 1, 1, 1);
         txtLanzamientosJ1.setBorder(javax.swing.BorderFactory.createEmptyBorder());
@@ -937,6 +979,7 @@ public class Inicio extends JFrame {
         contenedorPpal.add(lblLanzamientosJ2, constraints);
 
         txtLanzamientosJ2.setEditable(false);
+        txtLanzamientosJ2.setOpaque(false);
         txtLanzamientosJ2.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         setConstraints(1, 2, 1, 1);
         txtLanzamientosJ2.setBorder(javax.swing.BorderFactory.createEmptyBorder());
@@ -948,6 +991,7 @@ public class Inicio extends JFrame {
         contenedorPpal.add(lblLanzamientosEmpate, constraints);
 
         txtLanzamientosEmpate.setEditable(false);
+        txtLanzamientosEmpate.setOpaque(false);
         txtLanzamientosEmpate.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         setConstraints(1, 3, 1, 1);
         txtLanzamientosEmpate.setBorder(javax.swing.BorderFactory.createEmptyBorder());
@@ -959,6 +1003,7 @@ public class Inicio extends JFrame {
         contenedorPpal.add(lblGanadorParcial, constraints);
 
         txtGanadorParcial.setEditable(false);
+        txtGanadorParcial.setOpaque(false);
         txtGanadorParcial.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         setConstraints(3, 0, 1, 1);
         txtGanadorParcial.setBorder(javax.swing.BorderFactory.createEmptyBorder());
@@ -970,6 +1015,7 @@ public class Inicio extends JFrame {
         contenedorPpal.add(lblSumatoriaJ1, constraints);
 
         txtSumatoriaJ1.setEditable(false);
+        txtSumatoriaJ1.setOpaque(false);
         txtSumatoriaJ1.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         setConstraints(3, 1, 1, 1);
         txtSumatoriaJ1.setBorder(javax.swing.BorderFactory.createEmptyBorder());
@@ -981,6 +1027,7 @@ public class Inicio extends JFrame {
         contenedorPpal.add(lblSumatoriaJ2, constraints);
 
         txtSumatoriaJ2.setEditable(false);
+        txtSumatoriaJ2.setOpaque(false);
         txtSumatoriaJ2.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         setConstraints(3, 2, 1, 1);
         txtSumatoriaJ2.setBorder(javax.swing.BorderFactory.createEmptyBorder());
@@ -992,6 +1039,7 @@ public class Inicio extends JFrame {
         contenedorPpal.add(lblTiempoRonda, constraints);
 
         txtTiempoRonda.setEditable(false);
+        txtTiempoRonda.setOpaque(false);
         txtTiempoRonda.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         txtTiempoRonda.setText(juegoCasino.getTiempoDeJuego() + "");
         setConstraints(3, 3, 1, 1);
@@ -1011,6 +1059,7 @@ public class Inicio extends JFrame {
         contenedorPpal.add(lblTurnoActual, constraints);
 
         txtTurnoActual.setEditable(false);
+        txtTurnoActual.setOpaque(false);
         txtTurnoActual.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         setConstraints(1, 5, 2, 1);
         txtTurnoActual.setBorder(javax.swing.BorderFactory.createEmptyBorder());
@@ -1031,22 +1080,39 @@ public class Inicio extends JFrame {
         contenedorPpal.add(lbldado2, constraints);
 
         txtResultado.setEditable(false);
+        txtResultado.setOpaque(false);
         txtResultado.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         setConstraints(1, 7, 1, 1);
         txtResultado.setBorder(BorderFactory.createEmptyBorder());
         contenedorPpal.add(txtResultado, constraints);
 
         btnLanzar.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-        btnLanzar.setText("Tira los dados");
+        //btnLanzar.setText("Tira los dados");
         btnLanzar.setActionCommand("BTNLANZAR");
         btnLanzar.addActionListener(gestorEventos);
+        btnLanzar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/upd_norm.png"))); // NOI18N
+        btnLanzar.setAutoscrolls(true);
+        btnLanzar.setBorder(null);
+        btnLanzar.setBorderPainted(false);
+        btnLanzar.setContentAreaFilled(false);
+        btnLanzar.setFocusPainted(false);
+        btnLanzar.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/upd_norm.png"))); // NOI18N
+        btnLanzar.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/upd_norm.png"))); // NOI18N
         setConstraints(1, 8, 1, 1);
         contenedorPpal.add(btnLanzar, constraints);
 
         btnSeguir.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-        btnSeguir.setText("Seguir");
+        //btnSeguir.setText("Seguir");
         btnSeguir.setActionCommand("PASAR-TURNO");
         btnSeguir.addActionListener(gestorEventos);
+        btnSeguir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/acep_norm.png"))); // NOI18N
+        btnSeguir.setAutoscrolls(true);
+        btnSeguir.setBorder(null);
+        btnSeguir.setBorderPainted(false);
+        btnSeguir.setContentAreaFilled(false);
+        btnSeguir.setFocusPainted(false);
+        btnSeguir.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/acep_press.png"))); // NOI18N
+        btnSeguir.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/acep_roll.png"))); // NOI18N
         setConstraints(3, 9, 1, 1);
         contenedorPpal.add(btnSeguir, constraints);
 
@@ -1079,9 +1145,17 @@ public class Inicio extends JFrame {
         btnSeguir = new JButton();
         btnSeguir.setFont(new java.awt.Font("Perpetua Titling MT", 0, 18)); // NOI18N
         btnSeguir.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnSeguir.setText("Seguir");
+        //btnSeguir.setText("Seguir");
         btnSeguir.setActionCommand("BOTON_SEGUIR_NOMBRES");
         btnSeguir.addActionListener(gestorEventos);
+        btnSeguir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/acep_norm.png"))); // NOI18N
+        btnSeguir.setAutoscrolls(true);
+        btnSeguir.setBorder(null);
+        btnSeguir.setBorderPainted(false);
+        btnSeguir.setContentAreaFilled(false);
+        btnSeguir.setFocusPainted(false);
+        btnSeguir.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/acep_press.png"))); // NOI18N
+        btnSeguir.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/acep_roll.png"))); // NOI18N
 
         panelTitulo = new JPanel();
         panelTitulo.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -1167,10 +1241,18 @@ public class Inicio extends JFrame {
         btnSeguir = new JButton();
         btnSeguir.setFont(new java.awt.Font("Perpetua Titling MT", 0, 18)); // NOI18N
         btnSeguir.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnSeguir.setText("Seguir");
+//        btnSeguir.setText("Seguir");
         btnSeguir.setEnabled(true);
         btnSeguir.setActionCommand("BOTON_SEGUIR_LANZAMIENTO");
         btnSeguir.addActionListener(gestorEventos);
+        btnSeguir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/acep_norm.png"))); // NOI18N
+        btnSeguir.setAutoscrolls(true);
+        btnSeguir.setBorder(null);
+        btnSeguir.setBorderPainted(false);
+        btnSeguir.setContentAreaFilled(false);
+        btnSeguir.setFocusPainted(false);
+        btnSeguir.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/acep_press.png"))); // NOI18N
+        btnSeguir.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/acep_roll.png"))); // NOI18N
 
         panelTitulo = new JPanel();
         panelTitulo.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -1228,6 +1310,14 @@ public class Inicio extends JFrame {
         btnDosPersonas.addActionListener(gestorEventos);
         btnDosPersonas.setFont(new java.awt.Font("Perpetua Titling MT", 0, 24)); // NOI18N
         btnDosPersonas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnDosPersonas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/nuevo_norm.png"))); // NOI18N
+        btnDosPersonas.setAutoscrolls(true);
+        btnDosPersonas.setBorder(null);
+        btnDosPersonas.setBorderPainted(false);
+        btnDosPersonas.setContentAreaFilled(false);
+        btnDosPersonas.setFocusPainted(false);
+        btnDosPersonas.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/nuevo_press.png"))); // NOI18N
+        btnDosPersonas.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/nuevo_roll.png"))); // NOI18N
 
         btnUnaPersona = new JButton();
         btnUnaPersona.setText("Un Jugador");
@@ -1235,6 +1325,14 @@ public class Inicio extends JFrame {
         btnUnaPersona.addActionListener(gestorEventos);
         btnUnaPersona.setFont(new java.awt.Font("Perpetua Titling MT", 0, 24)); // NOI18N
         btnUnaPersona.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnUnaPersona.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/nuevo_norm.png"))); // NOI18N
+        btnUnaPersona.setAutoscrolls(true);
+        btnUnaPersona.setBorder(null);
+        btnUnaPersona.setBorderPainted(false);
+        btnUnaPersona.setContentAreaFilled(false);
+        btnUnaPersona.setFocusPainted(false);
+        btnUnaPersona.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/nuevo_press.png"))); // NOI18N
+        btnUnaPersona.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/nuevo_roll.png"))); // NOI18N
 
         panelTitulo = new JPanel();
         panelTitulo.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -1262,7 +1360,6 @@ public class Inicio extends JFrame {
         panelBotonesD.setLayout(new FlowLayout(FlowLayout.CENTER));
         panelBotonesD.add(btnUnaPersona);
         panelBotonesD.setOpaque(false);
-        
 
 //        panelBotones = new JPanel();
 //        panelBotones.setLayout(new BorderLayout());
@@ -1301,7 +1398,7 @@ public class Inicio extends JFrame {
         }
     }
 
-    private void cronometro(int m, int s){
+    private void cronometro(int m, int s) {
         SwingUtilities.updateComponentTreeUI(contenedorPpal);
         txtTiempoRonda.setText(m + " min, " + s + " segs");
         SwingUtilities.updateComponentTreeUI(contenedorPpal);
