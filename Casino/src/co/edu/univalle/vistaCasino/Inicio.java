@@ -427,13 +427,11 @@ public class Inicio extends JFrame {
                     break;
 
                 case "PASAR-TURNO":
+                    habilitarMouse();
                     txtResultado.setText("");
                     SwingUtilities.updateComponentTreeUI(contenedorPpal);
                     boolean J1 = juegoCasino.obtenerJugador(0).isDebeLanzar();
                     boolean J2 = juegoCasino.obtenerJugador(1).isDebeLanzar();
-                    System.out.println(juegoCasino.getModoDeJuego());
-                    System.out.println("J2" + juegoCasino.obtenerJugador(1).isDebeLanzar());
-                    System.out.println("J1" + juegoCasino.obtenerJugador(0).isDebeLanzar());
 
                     if ("Jugador VS Maquina".equals(juegoCasino.getModoDeJuego()) && J1 == true && tirohecho == true) {
                         pasoDeTurno(J1, J2);
@@ -451,7 +449,6 @@ public class Inicio extends JFrame {
                     juegoCasino.setModoDeJuego("");
                     juegoCasino.getJugadores().clear();
                     juegoCasino.setNumeroLanzamientosRonda(0);
-                    System.out.println(juegoCasino.getNumeroLanzamientosCopia());
                     juegoCasino.setTiempoDeJuego(0);
                     juegoCasino.setLanzamientosEmpatados(0);
                     juegoCasino.setNumeroLanzamientoActual(0);
@@ -524,6 +521,7 @@ public class Inicio extends JFrame {
     }
 
     public void finDelJuego() {
+        habilitarMouse();
         t.stop();
         juegoCasino.setEnJuego(false);
         juegoCasino.obtenerJugador(0).setDebeLanzar(false);
@@ -772,7 +770,6 @@ public class Inicio extends JFrame {
                     JOptionPane.showMessageDialog(Inicio.this, "¡Empate! Se repetirán los lanzamientos", "Casino Univalle", JOptionPane.WARNING_MESSAGE);
                 }
                 ganadorParcial(sumatoriaJ1, sumatoriaJ2);
-                habilitarMouse();
             } else {
                 lanzamientosRestantes -= 1;
                 juegoCasino.setNumeroLanzamientosRonda(lanzamientosRestantes);
@@ -788,7 +785,6 @@ public class Inicio extends JFrame {
                 ganadorParcial(sumatoriaJ1, sumatoriaJ2);
                 juegoCasino.obtenerJugador(1).setDebeLanzar(false);
                 juegoCasino.obtenerJugador(0).setDebeLanzar(true);
-                habilitarMouse();
                 if (lanzamientosRestantes == 0) {
                     finDelJuego();
                 }
