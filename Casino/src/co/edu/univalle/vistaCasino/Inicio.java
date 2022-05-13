@@ -203,7 +203,6 @@ public class Inicio extends JFrame {
 //        lblTitulo.setText("BIENVENIDOS");
 //        lblTitulo.setFont(new java.awt.Font("Perpetua Titling MT", 0, 24)); // NOI18N
 //        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-
         lblLogo = new JLabel();
         Icon logo = new javax.swing.ImageIcon(getClass().getResource("/imagenes/mensaje.png"));
         lblLogo.setIcon(logo);
@@ -235,7 +234,6 @@ public class Inicio extends JFrame {
 //        gbc.gridheight = 1;
 //        gbc.fill = GridBagConstraints.CENTER;
 //        panel.add(lblTitulo, gbc);
-
 //        gbc.gridx = 0;
 //        gbc.gridy = 1;
 //        gbc.gridwidth = 3;
@@ -253,7 +251,6 @@ public class Inicio extends JFrame {
 //        gbc.gridwidth = 3;
 //        gbc.fill = GridBagConstraints.CENTER;
 //        panel.add(lblTemp5, gbc);
-
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.fill = GridBagConstraints.CENTER;
@@ -459,6 +456,10 @@ public class Inicio extends JFrame {
                     juegoCasino.setLanzamientosEmpatados(0);
                     juegoCasino.setNumeroLanzamientoActual(0);
                     juegoCasino.setEnJuego(false);
+                    h = 0;
+                    m = 0;
+                    s = 0;
+                    cs = 0;
                     limpiarVentana();
                     inicializarModoDeJuego();
                 case "JUGAR_DE_NUEVO":
@@ -470,6 +471,10 @@ public class Inicio extends JFrame {
                     juegoCasino.setNumeroLanzamientosCopia(0);
                     juegoCasino.obtenerJugador(0).setDebeLanzar(false);
                     juegoCasino.obtenerJugador(1).setDebeLanzar(false);
+                    h = 0;
+                    m = 0;
+                    s = 0;
+                    cs = 0;
                     limpiarVentana();
                     crearInterfazJuego();
                     primeraRonda();
@@ -499,14 +504,14 @@ public class Inicio extends JFrame {
         SwingUtilities.updateComponentTreeUI(contenedorPpal);
     }
 
-    public void deshabilitarMouse(){
+    public void deshabilitarMouse() {
         BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
         Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(
-        cursorImg, new Point(0, 0), "blank cursor");
+                cursorImg, new Point(0, 0), "blank cursor");
         getContentPane().setCursor(blankCursor);
     }
 
-    public void habilitarMouse(){
+    public void habilitarMouse() {
         getContentPane().setCursor(Cursor.getDefaultCursor());
     }
 
@@ -910,7 +915,6 @@ public class Inicio extends JFrame {
         panelTitulo.setLayout(new FlowLayout(FlowLayout.CENTER));
         panelTitulo.add(lblTitulo);
         panelTitulo.setOpaque(false);
-
 
         panelnombres = new JPanel();
         panelnombres.setLayout(new GridLayout(5, 2, 50, 0));
