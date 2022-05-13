@@ -4,6 +4,7 @@ import co.edu.univalle.sistema.Jugador;
 import co.edu.univalle.sistema.Maquina;
 import co.edu.univalle.sistema.Sistema;
 import java.awt.BorderLayout;
+import java.awt.Color;
 
 import java.awt.Container;
 import java.awt.Dimension;
@@ -803,34 +804,51 @@ public class Inicio extends JFrame {
         lblRondas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         txtModoJuego = new javax.swing.JTextField();
-        txtModoJuego.setEnabled(false);
-        txtModoJuego.setText(juegoCasino.getModoDeJuego());
         txtModoJuego.setFont(new java.awt.Font("Arial Narrow", 0, 19)); // NOI18N
+        txtModoJuego.setText(juegoCasino.getModoDeJuego());
         txtModoJuego.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txtModoJuego.setOpaque(false);
+        txtModoJuego.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        txtModoJuego.setDisabledTextColor(Color.BLACK);
+        txtModoJuego.setEnabled(false);
+
+        SwingUtilities.updateComponentTreeUI(contenedorPpal);
 
         txtNombre1 = new javax.swing.JTextField();
         txtNombre1.setEnabled(false);
         txtNombre1.setText(juegoCasino.obtenerJugador(0).getNombre());
         txtNombre1.setFont(new java.awt.Font("Arial Narrow", 0, 19)); // NOI18N
         txtNombre1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txtNombre1.setOpaque(false);
+        txtNombre1.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        txtNombre1.setDisabledTextColor(Color.BLACK);
 
         txtNombre2 = new javax.swing.JTextField();
         txtNombre2.setEnabled(false);
         txtNombre2.setText(juegoCasino.obtenerJugador(1).getNombre());
         txtNombre2.setFont(new java.awt.Font("Arial Narrow", 0, 19)); // NOI18N
         txtNombre2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txtNombre2.setOpaque(false);
+        txtNombre2.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        txtNombre2.setDisabledTextColor(Color.BLACK);
 
         txtNumeroLanzamientos = new javax.swing.JTextField();
         txtNumeroLanzamientos.setEnabled(false);
         txtNumeroLanzamientos.setText(juegoCasino.getNumeroLanzamientosRonda() + "");
         txtNumeroLanzamientos.setFont(new java.awt.Font("Arial Narrow", 0, 19)); // NOI18N
         txtNumeroLanzamientos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txtNumeroLanzamientos.setOpaque(false);
+        txtNumeroLanzamientos.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        txtNumeroLanzamientos.setDisabledTextColor(Color.BLACK);
 
         txtRondas = new javax.swing.JTextField();
         txtRondas.setEnabled(false);
         txtRondas.setText(juegoCasino.getNumeroRondas() + "");
         txtRondas.setFont(new java.awt.Font("Arial Narrow", 0, 19)); // NOI18N
         txtRondas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txtRondas.setOpaque(false);
+        txtRondas.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        txtRondas.setDisabledTextColor(Color.BLACK);
 
         btnSeguirResumen = new javax.swing.JButton();
         btnSeguirResumen.setFont(new java.awt.Font("Perpetua Titling MT", 0, 18)); // NOI18N
@@ -875,6 +893,7 @@ public class Inicio extends JFrame {
         panelTitulo.setLayout(new FlowLayout(FlowLayout.CENTER));
         panelTitulo.add(lblTitulo);
         panelTitulo.setOpaque(false);
+
 
         panelnombres = new JPanel();
         panelnombres.setLayout(new GridLayout(5, 2, 50, 0));
@@ -1048,6 +1067,7 @@ public class Inicio extends JFrame {
 
         flowPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 10));
         flowPanel.setBorder(BorderFactory.createEmptyBorder());
+        flowPanel.setOpaque(false);
         setConstraints(0, 4, 4, 1);
         contenedorPpal.add(flowPanel, constraints);
 
