@@ -460,6 +460,10 @@ public class Inicio extends JFrame {
                     m = 0;
                     s = 0;
                     cs = 0;
+                    empates = 0;
+                    sumatoriaJ1 = 0;
+                    sumatoriaJ2 = 0;
+                    resultado = 0;
                     limpiarVentana();
                     inicializarModoDeJuego();
                 case "JUGAR_DE_NUEVO":
@@ -475,6 +479,10 @@ public class Inicio extends JFrame {
                     m = 0;
                     s = 0;
                     cs = 0;
+                    empates = 0;
+                    sumatoriaJ1 = 0;
+                    sumatoriaJ2 = 0;
+                    resultado = 0;
                     limpiarVentana();
                     crearInterfazJuego();
                     primeraRonda();
