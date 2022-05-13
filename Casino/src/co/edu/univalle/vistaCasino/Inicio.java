@@ -196,13 +196,13 @@ public class Inicio extends JFrame {
         JLabel lblTemp4 = new JLabel("  ");
         JLabel lblTemp5 = new JLabel("  ");
 
-        lblTitulo = new JLabel();
-        lblTitulo.setText("CASINO UNIVALLE");
-        lblTitulo.setFont(new java.awt.Font("Perpetua Titling MT", 0, 24)); // NOI18N
-        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+//        lblTitulo = new JLabel();
+//        lblTitulo.setText("BIENVENIDOS");
+//        lblTitulo.setFont(new java.awt.Font("Perpetua Titling MT", 0, 24)); // NOI18N
+//        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         lblLogo = new JLabel();
-        Icon logo = new javax.swing.ImageIcon(getClass().getResource("/imagenes/icono.png"));
+        Icon logo = new javax.swing.ImageIcon(getClass().getResource("/imagenes/mensaje.png"));
         lblLogo.setIcon(logo);
 
         btnEmpezar = new JButton();
@@ -227,29 +227,29 @@ public class Inicio extends JFrame {
         panel.setOpaque(false);
 
         // Put constraints on different buttons
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridheight = 1;
-        gbc.fill = GridBagConstraints.CENTER;
-        panel.add(lblTitulo, gbc);
+//        gbc.gridx = 0;
+//        gbc.gridy = 0;
+//        gbc.gridheight = 1;
+//        gbc.fill = GridBagConstraints.CENTER;
+//        panel.add(lblTitulo, gbc);
 
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 3;
-        gbc.fill = GridBagConstraints.CENTER;
-        panel.add(lblTemp3, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.gridwidth = 3;
-        gbc.fill = GridBagConstraints.CENTER;
-        panel.add(lblTemp4, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.gridwidth = 3;
-        gbc.fill = GridBagConstraints.CENTER;
-        panel.add(lblTemp5, gbc);
+//        gbc.gridx = 0;
+//        gbc.gridy = 1;
+//        gbc.gridwidth = 3;
+//        gbc.fill = GridBagConstraints.CENTER;
+//        panel.add(lblTemp3, gbc);
+//
+//        gbc.gridx = 0;
+//        gbc.gridy = 2;
+//        gbc.gridwidth = 3;
+//        gbc.fill = GridBagConstraints.CENTER;
+//        panel.add(lblTemp4, gbc);
+//
+//        gbc.gridx = 0;
+//        gbc.gridy = 3;
+//        gbc.gridwidth = 3;
+//        gbc.fill = GridBagConstraints.CENTER;
+//        panel.add(lblTemp5, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 4;
