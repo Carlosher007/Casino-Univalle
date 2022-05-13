@@ -17,11 +17,16 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 import javax.imageio.ImageIO;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import javax.swing.SwingUtilities;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  * Laboratorio N.1: primer miniproyecto. Archivo: Inicio.java Autores (Grupo 01 POE): -Brayan Andrés
@@ -139,7 +144,6 @@ public class Inicio extends JFrame {
         BufferedImage img;
         try {
             img = ImageIO.read(getClass().getResource("/imagenes/fondodados.png"));
-
             setLayout(new BorderLayout());
             setContentPane(new JLabel(new ImageIcon(img)));
             Dimension dim = new Dimension(img.getWidth(), img.getHeight());
@@ -148,7 +152,7 @@ public class Inicio extends JFrame {
             setMaximumSize(dim);
             setResizable(false);
         } catch (IOException e) {
-            e.printStackTrace();
+            //Ninguna acción a partir de la excepción
         }
         JFrame.setDefaultLookAndFeelDecorated(true);
         setLocationRelativeTo(null);
@@ -188,21 +192,52 @@ public class Inicio extends JFrame {
         }
     };
 
+    public void reproducirSonido(String cualSonido){
+        switch(cualSonido){
+            case "fondo" -> {
+            try {
+                Clip sonido = AudioSystem.getClip();
+                sonido.open(AudioSystem.getAudioInputStream(new File("src\\musica\\fondo.wav")));
+                sonido.start();
+
+                sonido.loop(Clip.LOOP_CONTINUOUSLY);
+
+            } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
+                System.out.println("" + e);
+            }
+            }
+            case "dados" -> play("src\\musica\\dados.wav");
+            case "boton" -> play("src\\musica\\boton.wav");
+            case "victoria" -> play("src\\musica\\victoria.wav");
+            default -> {
+            }
+        }
+    }
+
+    void play(String filePath) {
+        try {
+            Clip sonido2 = AudioSystem.getClip();
+            sonido2.open(AudioSystem.getAudioInputStream(new File(filePath)));
+            sonido2.start();
+            int delay2 = 3000;
+            Timer timer2;
+            timer2 = new Timer(delay2, e -> { sonido2.close(); });
+            timer2.setRepeats(false);
+            timer2.start();
+        } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
+            System.out.println("" + e);
+        }
+    }
+
     //Inicializamos los componentes para la ventana Inicio
     public void inicializarComponentes() {
+        reproducirSonido("fondo");
         contenedorPpal = getContentPane();
         contenedorPpal.setLayout(new GridBagLayout());
 
         JLabel lblTemp1 = new JLabel("   ");
         JLabel lblTemp2 = new JLabel("  ");
-        JLabel lblTemp3 = new JLabel("  ");
-        JLabel lblTemp4 = new JLabel("  ");
-        JLabel lblTemp5 = new JLabel("  ");
 
-//        lblTitulo = new JLabel();
-//        lblTitulo.setText("BIENVENIDOS");
-//        lblTitulo.setFont(new java.awt.Font("Perpetua Titling MT", 0, 24)); // NOI18N
-//        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblLogo = new JLabel();
         Icon logo = new javax.swing.ImageIcon(getClass().getResource("/imagenes/mensaje.png"));
         lblLogo.setIcon(logo);
@@ -228,29 +263,6 @@ public class Inicio extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
         panel.setOpaque(false);
 
-        // Put constraints on different buttons
-//        gbc.gridx = 0;
-//        gbc.gridy = 0;
-//        gbc.gridheight = 1;
-//        gbc.fill = GridBagConstraints.CENTER;
-//        panel.add(lblTitulo, gbc);
-//        gbc.gridx = 0;
-//        gbc.gridy = 1;
-//        gbc.gridwidth = 3;
-//        gbc.fill = GridBagConstraints.CENTER;
-//        panel.add(lblTemp3, gbc);
-//
-//        gbc.gridx = 0;
-//        gbc.gridy = 2;
-//        gbc.gridwidth = 3;
-//        gbc.fill = GridBagConstraints.CENTER;
-//        panel.add(lblTemp4, gbc);
-//
-//        gbc.gridx = 0;
-//        gbc.gridy = 3;
-//        gbc.gridwidth = 3;
-//        gbc.fill = GridBagConstraints.CENTER;
-//        panel.add(lblTemp5, gbc);
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.fill = GridBagConstraints.CENTER;
@@ -284,25 +296,28 @@ public class Inicio extends JFrame {
     }
 
     class EventosInternos implements ActionListener {
-
         @Override
         public void actionPerformed(ActionEvent e) {
             switch (e.getActionCommand()) {
                 case "EMPEZAR":
+                    reproducirSonido("boton");
                     limpiarVentana();
                     inicializarModoDeJuego();
                     break;
                 case "DOS_JUGADORES":
+                    reproducirSonido("boton");
                     limpiarVentana();
                     juegoCasino.setModoDeJuego("Jugador VS Jugador");
                     inicializarLanzamientoPorRonda();
                     break;
                 case "UN_JUGADOR":
+                    reproducirSonido("boton");
                     limpiarVentana();
                     juegoCasino.setModoDeJuego("Jugador VS Maquina");
                     inicializarLanzamientoPorRonda();
                     break;
                 case "BOTON_SEGUIR_LANZAMIENTO":
+                    reproducirSonido("boton");
                     String numeroDeLanzamientos = txtCampo.getText();
 
                     if (numeroDeLanzamientos == null || "".equals(numeroDeLanzamientos) || "0".equals(numeroDeLanzamientos)) {
@@ -327,38 +342,41 @@ public class Inicio extends JFrame {
                     }
                     break;
                 case "BOTON_SEGUIR_NOMBRES":
-                    if ("Jugador VS Jugador".equals(juegoCasino.getModoDeJuego())) {
-                        String nombre1 = txtCampo.getText();
-                        String nombre2 = txtCampo2.getText();
-                        if (nombre1 == null || "".equals(nombre1) || nombre2 == null || "".equals(nombre2) || nombre1.equals(nombre2)) {
-                            JOptionPane.showMessageDialog(Inicio.this, "Ingresa nombres validos", "Casino Univalle", JOptionPane.WARNING_MESSAGE);
-                        } else {
-                            juegoCasino.agregarJugador(nombre1);
-                            juegoCasino.agregarJugador(nombre2);
-                            limpiarVentana();
-                            resumen();
-                            break;
-                        }
-                    } else if ("Jugador VS Maquina".equals(juegoCasino.getModoDeJuego())) {
-                        String nombre1 = txtCampo.getText();
-                        if (nombre1 == null || "".equals(nombre1)) {
-                            JOptionPane.showMessageDialog(Inicio.this, "Ingresa nombres validos", "Casino Univalle", JOptionPane.WARNING_MESSAGE);
+                    reproducirSonido("boton");
+                    switch (juegoCasino.getModoDeJuego()) {
+                        case "Jugador VS Jugador":
+                            String nombre1 = txtCampo.getText();
+                            String nombre2 = txtCampo2.getText();
+                            if (nombre1 == null || "".equals(nombre1) || nombre2 == null || "".equals(nombre2) || nombre1.equals(nombre2)) {
+                                JOptionPane.showMessageDialog(Inicio.this, "Ingresa nombres validos", "Casino Univalle", JOptionPane.WARNING_MESSAGE);
+                            } else {
+                                juegoCasino.agregarJugador(nombre1);
+                                juegoCasino.agregarJugador(nombre2);
+                                limpiarVentana();
+                                resumen();
+                                break;
+                            }
+                        case "Jugador VS Maquina":
+                            nombre1 = txtCampo.getText();
+                            if (nombre1 == null || "".equals(nombre1)) {
+                                JOptionPane.showMessageDialog(Inicio.this, "Ingresa nombres validos", "Casino Univalle", JOptionPane.WARNING_MESSAGE);
 
-                        } else {
-                            juegoCasino.agregarJugador(nombre1);
-                            juegoCasino.agregarMaquina();
+                            } else {
+                                juegoCasino.agregarJugador(nombre1);
+                                juegoCasino.agregarMaquina();
 
-                            //INICIALIZAR TIEMPO EN GENERAL
-                            limpiarVentana();
-                            resumen();
-                            break;
+                                //INICIALIZAR TIEMPO EN GENERAL
+                                limpiarVentana();
+                                resumen();
+                                break;
+                            }
+                        default:
+                            JOptionPane.showMessageDialog(Inicio.this, "Hubo problemas en los datos, disculpe", "Casino Univalle", JOptionPane.WARNING_MESSAGE);
+                            System.exit(0);
                         }
-                    } else {
-                        JOptionPane.showMessageDialog(Inicio.this, "Hubo problemas en los datos, disculpe", "Casino Univalle", JOptionPane.WARNING_MESSAGE);
-                        System.exit(0);
-                    }
                     break;
                 case "BTNLANZAR":
+                    reproducirSonido("dados");
                     //Generar el tiro de los dados, usando numeros generados aleatoriamente
                     int dado1 = 1 + aleatorio.nextInt(6);
                     int dado2 = 1 + aleatorio.nextInt(6);
@@ -413,20 +431,22 @@ public class Inicio extends JFrame {
                     btnLanzar.setEnabled(false);
                     btnSeguir.setEnabled(true);
                     tirohecho = true;
-
                     break;
 
                 case "LIMPIAR":
+                    reproducirSonido("boton");
                     limpiarVentana();
                     break;
 
                 case "LIMPIAR+CREAR":
+                    reproducirSonido("boton");
                     limpiarVentana();
                     crearInterfazJuego();
                     primeraRonda();
                     break;
 
                 case "PASAR-TURNO":
+                    reproducirSonido("boton");
                     habilitarMouse();
                     txtResultado.setText("");
                     SwingUtilities.updateComponentTreeUI(contenedorPpal);
@@ -441,11 +461,15 @@ public class Inicio extends JFrame {
                     btnLanzar.setEnabled(true);
                     btnSeguir.setEnabled(false);
                     break;
+
                 case "LIMPIAR_RESUMEN":
+                    reproducirSonido("boton");
                     limpiarVentana();
                     inicializarModoDeJuego();
                     break;
+
                 case "REINICIAR_FIN_JUEGO":
+                    reproducirSonido("boton");
                     juegoCasino.setModoDeJuego("");
                     juegoCasino.getJugadores().clear();
                     juegoCasino.setNumeroLanzamientosRonda(0);
@@ -463,7 +487,9 @@ public class Inicio extends JFrame {
                     resultado = 0;
                     limpiarVentana();
                     inicializarModoDeJuego();
+
                 case "JUGAR_DE_NUEVO":
+                    reproducirSonido("boton");
                     juegoCasino.setNumeroLanzamientosRonda(juegoCasino.getNumeroLanzamientosCopia());
                     juegoCasino.setTiempoDeJuego(0);
                     juegoCasino.setLanzamientosEmpatados(0);
@@ -484,14 +510,15 @@ public class Inicio extends JFrame {
                     crearInterfazJuego();
                     primeraRonda();
                     break;
+
                 case "SALIR_FIN_JUEGO":
+                    reproducirSonido("boton");
                     JOptionPane.showMessageDialog(Inicio.this, "Hasta la proxima", "Casino Univalle", JOptionPane.INFORMATION_MESSAGE);
                     System.exit(0);
-
                     break;
+
                 default:
                     JOptionPane.showMessageDialog(Inicio.this, "Hubo problemas en los datos, disculpe", "Casino Univalle", JOptionPane.WARNING_MESSAGE);
-
                     System.exit(0);
                     break;
             }
@@ -511,8 +538,7 @@ public class Inicio extends JFrame {
 
     public void deshabilitarMouse() {
         BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-        Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(
-                cursorImg, new Point(0, 0), "blank cursor");
+        Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
         getContentPane().setCursor(blankCursor);
     }
 
@@ -530,9 +556,7 @@ public class Inicio extends JFrame {
         btnLanzar.setEnabled(false);
         btnSeguir.setEnabled(false);
         int delay = 1500;
-        Timer timer = new Timer(delay, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        Timer timer = new Timer(delay, (ActionEvent e) -> {
                 limpiarVentana();
                 SwingUtilities.updateComponentTreeUI(contenedorPpal);
                 if (!"Ninguno".equals(txtGanadorParcial.getText())) {
@@ -540,6 +564,7 @@ public class Inicio extends JFrame {
                 } else {
                     JOptionPane.showMessageDialog(Inicio.this, "¡Fue un gran duelo!, quedaron empatados.", "Casino Univalle", JOptionPane.WARNING_MESSAGE);
                 }
+                reproducirSonido("victoria");
                 lblGanadorParcial.setText("Jugador Vencedor: ");
                 setConstraints(0, 1, 2, 1);
                 contenedorPpal.add(lblGanadorParcial, constraints);
@@ -616,30 +641,6 @@ public class Inicio extends JFrame {
                 txtTiempoRonda.setBorder(javax.swing.BorderFactory.createEmptyBorder());
                 contenedorPpal.add(txtTiempoRonda, constraints);
 
-                /*lblTiempoJ1.setFont(new java.awt.Font("Century Gothic", 0, 18));
-                lblTiempoJ1.setText("Tiempo Jugador 1: ");
-                setConstraints(4, 4, 1, 1);
-                contenedorPpal.add(lblTiempoJ1, constraints);
-
-                txtTiempoJ1.setEditable(false);
-                txtTiempoJ1.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-                setConstraints(5, 4, 1, 1);
-                txtTiempoJ1.setText(juegoCasino.obtenerJugador(0).getTiempoDeJuego() + " segundos");
-                txtTiempoJ1.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-                contenedorPpal.add(txtTiempoJ1, constraints);
-                
-                lblTiempoJ2.setFont(new java.awt.Font("Century Gothic", 0, 18));
-                lblTiempoJ2.setText("Tiempo Jugador 2: ");
-                setConstraints(5, 4, 1, 1);
-                contenedorPpal.add(lblTiempoJ1, constraints);
-
-                txtTiempoJ2.setEditable(false);
-                txtTiempoJ2.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-                setConstraints(6, 4, 1, 1);
-                txtTiempoJ2.setText(juegoCasino.obtenerJugador(1).getTiempoDeJuego() + " segundos");
-                txtTiempoJ2.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-                contenedorPpal.add(txtTiempoJ1, constraints);
-                 */
                 flowPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 10));
                 flowPanel.setOpaque(false);
                 flowPanel.setBorder(BorderFactory.createEmptyBorder());
@@ -647,7 +648,6 @@ public class Inicio extends JFrame {
                 contenedorPpal.add(flowPanel, constraints);
 
                 btnJugarDeNuevo.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-                // btnJugarDeNuevo.setText("Jugar de Nuevo");
                 btnJugarDeNuevo.setActionCommand("JUGAR_DE_NUEVO");
                 btnJugarDeNuevo.addActionListener(gestorEventos);
                 btnReiniciarResumen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/nuevo_norm.png"))); // NOI18N
@@ -662,7 +662,6 @@ public class Inicio extends JFrame {
                 contenedorPpal.add(btnJugarDeNuevo, constraints);
 
                 btnReiniciarResumen.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-                // btnReiniciarResumen.setText("Reiniciar Casino");
                 btnReiniciarResumen.setActionCommand("REINICIAR_FIN_JUEGO"); //FALTA CREAR ESTE COMANDO
                 btnReiniciarResumen.addActionListener(gestorEventos);
                 btnJugarDeNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/vista_prev_norm.png"))); // NOI18N
@@ -677,7 +676,6 @@ public class Inicio extends JFrame {
                 contenedorPpal.add(btnReiniciarResumen, constraints);
 
                 btnSalir.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-                //btnSalir.setText("Finalizar");
                 btnSalir.setActionCommand("SALIR_FIN_JUEGO"); //FALTA CREAR ESTE COMANDO
                 btnSalir.addActionListener(gestorEventos);
                 btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/salir_norm.png"))); // NOI18N
@@ -690,38 +688,28 @@ public class Inicio extends JFrame {
                 btnSalir.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/salir_roll.png"))); // NOI18N
                 setConstraints(2, 6, 1, 1);
                 contenedorPpal.add(btnSalir, constraints);
-
                 SwingUtilities.updateComponentTreeUI(contenedorPpal);
-            }
         });
         timer.setRepeats(false);
         timer.start();
-
     }
 
     public void tiroDeMaquina() {
         int delay = 1500;
-        Timer timer = new Timer(delay, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                btnLanzar.setEnabled(true);
-                btnLanzar.doClick();
-                pasoDeTurno(false, true);
-            }
+        var timer = new Timer(delay, e -> {
+            btnLanzar.setEnabled(true);
+            btnLanzar.doClick();
+            pasoDeTurno(false, true);
         });
         timer.setRepeats(false);
         timer.start();
 
         int delay2 = 3000;
-        Timer timer2 = new Timer(delay2, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tirohecho = false;
-                btnSeguir.doClick();
-                btnLanzar.setEnabled(true);
-                btnSeguir.setEnabled(false);
-            }
+        Timer timer2 = new Timer(delay2, e -> {
+            tirohecho = false;
+            btnSeguir.doClick();
+            btnLanzar.setEnabled(true);
+            btnSeguir.setEnabled(false);
         });
         timer2.setRepeats(false);
         timer2.start();
@@ -732,7 +720,7 @@ public class Inicio extends JFrame {
         int lanzamientosRealizadosJ1 = juegoCasino.obtenerJugador(0).getLanzamientosHechos();
         int lanzamientosRealizadosJ2 = juegoCasino.obtenerJugador(1).getLanzamientosHechos();
         int puntajeJ1 = juegoCasino.obtenerJugador(0).getPuntajeLanzamientoActual();
-        int puntajeJ2 = juegoCasino.obtenerJugador(1).getPuntajeLanzamientoActual();
+        int puntajeJ2;
 
         if (J1 == true) {
             puntajeJ1 = resultado;
@@ -747,7 +735,7 @@ public class Inicio extends JFrame {
             txtTurnoActual.setText(juegoCasino.obtenerJugador(1).getNombre());
             SwingUtilities.updateComponentTreeUI(contenedorPpal);
             ganadorParcial(sumatoriaJ1, sumatoriaJ2);
-            if (juegoCasino.getModoDeJuego() == "Jugador VS Maquina") {
+            if ("Jugador VS Maquina".equals(juegoCasino.getModoDeJuego())) {
                 tiroDeMaquina();
                 deshabilitarMouse();
             }
@@ -790,7 +778,6 @@ public class Inicio extends JFrame {
                 }
             }
         }
-
     }
 
     public void resumen() {
@@ -879,7 +866,6 @@ public class Inicio extends JFrame {
         btnSeguirResumen = new javax.swing.JButton();
         btnSeguirResumen.setFont(new java.awt.Font("Perpetua Titling MT", 0, 18)); // NOI18N
         btnSeguirResumen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        //btnSeguirResumen.setText("Seguir");
         btnSeguirResumen.setActionCommand("LIMPIAR+CREAR");
         btnSeguirResumen.addActionListener(gestorEventos);
         btnSeguirResumen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/acep_norm.png"))); // NOI18N
@@ -894,7 +880,6 @@ public class Inicio extends JFrame {
         btnReiniciarResumen = new javax.swing.JButton();
         btnReiniciarResumen.setFont(new java.awt.Font("Perpetua Titling MT", 0, 18)); // NOI18N
         btnReiniciarResumen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        //btnReiniciarResumen.setText("Reiniciar");
         btnReiniciarResumen.setActionCommand("LIMPIAR_RESUMEN");
         btnReiniciarResumen.addActionListener(gestorEventos);
         btnReiniciarResumen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/limpiar_norm.png"))); // NOI18N
@@ -946,7 +931,6 @@ public class Inicio extends JFrame {
         panelCentro.setOpaque(false);
 
         contenedorPpal.add(panelCentro);
-
     }
 
     public void crearInterfazJuego() {
@@ -1110,12 +1094,6 @@ public class Inicio extends JFrame {
         txtTurnoActual.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         contenedorPpal.add(txtTurnoActual, constraints);
 
-        /*
-        lblTitulo.setFont(new java.awt.Font("Perpetua Titling MT", 0, 24)); // NOI18N
-        lblTitulo.setHorizontalAlignment(JLabel.CENTER);
-        lblTitulo.setText("CASINO UNIVALLE");
-        setConstraints(0,0,2,1);
-        contenedorPpal.add(lblTitulo, constraints); */
         lbldado1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/dado2.png"))); // NOI18N
         setConstraints(0, 6, 2, 1);
         contenedorPpal.add(lbldado1, constraints);
@@ -1132,7 +1110,6 @@ public class Inicio extends JFrame {
         contenedorPpal.add(txtResultado, constraints);
 
         btnLanzar.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-        //btnLanzar.setText("Tira los dados");
         btnLanzar.setActionCommand("BTNLANZAR");
         btnLanzar.addActionListener(gestorEventos);
         btnLanzar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/upd_norm.png"))); // NOI18N
@@ -1147,7 +1124,6 @@ public class Inicio extends JFrame {
         contenedorPpal.add(btnLanzar, constraints);
 
         btnSeguir.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
-        //btnSeguir.setText("Seguir");
         btnSeguir.setActionCommand("PASAR-TURNO");
         btnSeguir.addActionListener(gestorEventos);
         btnSeguir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/acep_norm.png"))); // NOI18N
@@ -1162,7 +1138,6 @@ public class Inicio extends JFrame {
         contenedorPpal.add(btnSeguir, constraints);
 
         SwingUtilities.updateComponentTreeUI(contenedorPpal);
-
     }
 
     private void inicializarNombres() {
@@ -1190,7 +1165,6 @@ public class Inicio extends JFrame {
         btnSeguir = new JButton();
         btnSeguir.setFont(new java.awt.Font("Perpetua Titling MT", 0, 18)); // NOI18N
         btnSeguir.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        //btnSeguir.setText("Seguir");
         btnSeguir.setActionCommand("BOTON_SEGUIR_NOMBRES");
         btnSeguir.addActionListener(gestorEventos);
         btnSeguir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botones/acep_norm.png"))); // NOI18N
@@ -1286,7 +1260,6 @@ public class Inicio extends JFrame {
         btnSeguir = new JButton();
         btnSeguir.setFont(new java.awt.Font("Perpetua Titling MT", 0, 18)); // NOI18N
         btnSeguir.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-//        btnSeguir.setText("Seguir");
         btnSeguir.setEnabled(true);
         btnSeguir.setActionCommand("BOTON_SEGUIR_LANZAMIENTO");
         btnSeguir.addActionListener(gestorEventos);
@@ -1330,7 +1303,7 @@ public class Inicio extends JFrame {
         contenedorPpal.setLayout(new GridBagLayout());
 
         panelCentro = new JPanel();
-        panelCentro.setLayout(new GridLayout(5, 1)); // Vamos a agrupar paneles dentro de un "grid"
+        panelCentro.setLayout(new GridBagLayout()); // Vamos a agrupar paneles dentro de un "grid"
 
         lblTitulo = new JLabel();
         lblTitulo.setText("CASINO UNIVALLE");
@@ -1406,19 +1379,19 @@ public class Inicio extends JFrame {
         panelBotonesD.add(btnUnaPersona);
         panelBotonesD.setOpaque(false);
 
-//        panelBotones = new JPanel();
-//        panelBotones.setLayout(new BorderLayout());
-//        panelBotones.add(btnDosPersonas, BorderLayout.WEST);
-//        panelBotones.add(btnUnaPersona, BorderLayout.EAST);
-        panelCentro.add(panelTitulo);
-        panelCentro.add(panelImagenesI);
-        panelCentro.add(panelBotonesI);
-        panelCentro.add(panelImagenesD);
-        panelCentro.add(panelBotonesD);
+        setConstraints(0,0,1,1);
+        panelCentro.add(panelTitulo, constraints);
+        setConstraints(0,2,1,1);
+        panelCentro.add(panelImagenesI, constraints);
+        setConstraints(0,3,1,1);
+        panelCentro.add(panelBotonesI, constraints);
+        setConstraints(0,4,1,1);
+        panelCentro.add(panelImagenesD, constraints);
+        setConstraints(0,5,1,1);
+        panelCentro.add(panelBotonesD, constraints);
         panelCentro.setOpaque(false);
 
         contenedorPpal.add(panelCentro);
-
     }
 
     private void inicializarTiempoJugador2() {
@@ -1448,5 +1421,4 @@ public class Inicio extends JFrame {
         txtTiempoRonda.setText(m + " min, " + s + " segs");
         SwingUtilities.updateComponentTreeUI(contenedorPpal);
     }
-
 }
